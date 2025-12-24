@@ -24,6 +24,11 @@
 			"quoteStyle": "double"
 		}
 	},
+	"html": {
+		"formatter": {
+			"indentStyle": "tab"
+		}
+	},
 	"assist": {
 		"enabled": true,
 		"actions": {

@@ -1,0 +1,13 @@
+export const API_BASE = "https://v2.api.noroff.dev";
+export const PRODUCTS_ENDPOINT = "/holidaze/venues";
+export const CONTACT_PAGE_URL = "/contact";
+export const CHECKOUT_PAGE_URL = "/checkout";
+export const CHECKOUT_SUCCESS_PAGE_URL = `${CHECKOUT_PAGE_URL}/success`;
+export const PRODUCT_PAGE_URL = "/venues/:id";
+export const HOME_PAGE_URL = "/";
+export const LOGIN_PAGE_URL = "/login";
+export const REGISTER_PAGE_URL = "/register";
+export const PROFILE_PAGE_URL = "/profile";
+export const CREATE_VENUE_PAGE_URL = "/create-venue";
+export const EDIT_VENUE_PAGE_URL = "/edit-venue/:id";
+export const BOOKING_PAGE_URL = "/booking";
