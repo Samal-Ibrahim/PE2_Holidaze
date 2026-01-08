@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+@layer components {
+	/* .section-container {
+		@apply bg-(--color-content-bg) shadow-md rounded min-h-80 transition-shadow duration-300 flex flex-col px-60 lg:px-30 md:px-20 sm:px-10 2xs:p-2 justify-center py-4 opacity-90 items-start;
+	} */
+}

@@ -1,35 +1,20 @@
-import { useState } from "react";
-import viteLogo from "/vite.svg";
-import reactLogo from "./assets/react.svg";
-import "./App.css";
+import { Header } from "./components/Header/Index"
+import AppRoutes from "./routes/AppRoutes"
 
 function App() {
-	const [count, setCount] = useState(0);
-
 	return (
-		<>
+		<div className="grid grid-rows-[auto_1fr_auto] mx-auto px-2 min-h-screen container">
+			<div className="w-full">
+				<Header />
+			</div>
+			<div className="">
+				<AppRoutes />
+			</div>
 			<div>
-				<a href="https://vite.dev" target="_blank" rel="noopener">
-					<img src={viteLogo} className="logo" alt="Vite logo" />
-				</a>
-				<a href="https://react.dev" target="_blank" rel="noopener">
-					<img src={reactLogo} className="logo react" alt="React logo" />
-				</a>
+				<p>Footer content &copy; {new Date().getFullYear()} Holidaze</p>
 			</div>
-			<h1>Vite + React</h1>
-			<div className="card">
-				<button type="button" onClick={() => setCount((count) => count + 1)}>
-					count is {count}
-				</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<p className="read-the-docs">
-				Click on the Vite and React logos to learn more
-			</p>
-		</>
-	);
+		</div>
+	)
 }
 
-export default App;
+export default App

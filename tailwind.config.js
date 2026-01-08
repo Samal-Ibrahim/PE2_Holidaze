@@ -1,4 +1,4 @@
-import lineClamp from "@tailwindcss/line-clamp";
+import lineClamp from "@tailwindcss/line-clamp"
 export default {
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
 	darkMode: "class",
@@ -10,14 +10,14 @@ export default {
 			base: "1rem", // 16px
 			lg: "1.125rem", // 18px
 			xl: "1.25rem", // 20px
-			"2xl": "1.5rem", // 24px
-			"3xl": "1.875rem", // 30px
-			"4xl": "2.25rem", // 36px
-			"5xl": "3rem", // 48px
-			"6xl": "3.75rem", // 60px
-			"7xl": "4.5rem", // 72px
-			"8xl": "6rem", // 96px
-			"9xl": "8rem", // 128px
+		},
+		screens: {
+			"2xs": "320px",
+			sm: "640px",
+			md: "768px",
+			lg: "1024px",
+			xl: "1280px",
+			"2xl": "1536px",
 		},
 		extend: {
 			fontSize: {
@@ -45,19 +45,14 @@ export default {
 					"sans-serif",
 				],
 				// Fallback serif stack
-				serif: [
-					"ui-serif",
-					"Georgia",
-					"Cambria",
-					"Times New Roman",
-					"Times",
-					"serif",
-				],
+				serif: ["ui-serif", "Georgia", "Cambria", "Times New Roman", "Times", "serif"],
 			},
 			colors: {
 				brand: {
 					bg: "rgba(var(--color-bg))",
 					txt: "rgba(var(--color-text))",
+					contentBg: "rgba(var(--color-content-bg))",
+					heading: "rgba(var(--color-heading))",
 				},
 				accent: {
 					light: "#FCD34D",
@@ -68,4 +63,4 @@ export default {
 		},
 	},
 	plugins: [lineClamp],
-};
+}
