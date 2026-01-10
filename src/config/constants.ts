@@ -11,3 +11,4 @@ export const PROFILE_PAGE_URL = "/profile";
 export const CREATE_VENUE_PAGE_URL = "/create-venue";
 export const EDIT_VENUE_PAGE_URL = "/edit-venue/:id";
 export const BOOKING_PAGE_URL = "/booking";
+export const LOGIN_API_URL = `${API_BASE}/auth/login`;
