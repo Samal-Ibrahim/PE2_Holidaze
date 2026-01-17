@@ -1,5 +1,8 @@
+import { ToastContainer } from "react-toastify"
 import { Header } from "./components/Header/Index"
 import AppRoutes from "./routes/AppRoutes"
+import "react-toastify/dist/ReactToastify.css"
+import Footer from "./components/Footer/index"
 
 function App() {
 	return (
@@ -7,11 +10,12 @@ function App() {
 			<div className="w-full">
 				<Header />
 			</div>
-			<div className="">
+			<main className="">
+				<ToastContainer position="top-right" autoClose={2000} />
 				<AppRoutes />
-			</div>
+			</main>
 			<div>
-				<p>Footer content &copy; {new Date().getFullYear()} Holidaze</p>
+				<Footer />
 			</div>
 		</div>
 	)

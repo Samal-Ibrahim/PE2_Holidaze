@@ -1,5 +1,5 @@
 .btn {
-	@apply inline-flex items-center gap-2 rounded-lg px-4 py-2 font-medium;
+	@apply bg-btn text-btn-text hover:bg-btn-bg-hover hover:text-btn-text-hover text-center  px-4 py-2 transition-colors duration-300 cursor-pointer;
 }
 
 .card {
@@ -7,5 +7,5 @@
 }
 
 .nav-link {
-	@apply text-text py-1 px-2 decoration-0 hover:bg-bg-hover;
+	@apply text-text cursor-pointer hover:bg-btn-bg-hover hover:text-btn-text-hover text-center;
 }

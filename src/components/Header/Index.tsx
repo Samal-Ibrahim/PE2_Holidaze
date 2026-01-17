@@ -1,49 +1,47 @@
-import { useEffect, useState } from "react"
-import { FaMoon, FaSun } from "react-icons/fa"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import {
+	LOGIN_PAGE_URL,
+	PROFILE_PAGE_URL,
+	REGISTER_PAGE_URL,
+	VENUES_PAGE_URL,
+} from "@/config/constants"
 
+import { useAuth } from "@/hooks/useAuth"
 export const Header = () => {
-	const [isDarkMode, setIsDarkMode] = useState(false)
-	useEffect(() => {
-		if (isDarkMode) {
-			document.documentElement.classList.add("dark")
-		} else {
-			document.documentElement.classList.remove("dark")
-		}
-	}, [isDarkMode])
+	const { logout, user } = useAuth()
+	const navigate = useNavigate()
 
 	return (
 		<div className="flex flex-col justify-between mt-6 items-center">
 			<h2 className="text-3xl font-bold color-text">Holidaze</h2>
 			<nav className="color-text flex items-center gap-8 justify-center">
 				<div className="flex space-x-4">
-					<Link className="nav-link" to="/">
+					<Link className={`nav-link ${user ? "block" : "hidden"}`} to="/">
 						Home
 					</Link>
-					<Link className="nav-link" to="/profile">
+					<Link className={`nav-link ${user ? "block" : "hidden"}`} to={PROFILE_PAGE_URL}>
 						Profile
 					</Link>
-					<Link className="nav-link" to="/venues">
+					<Link className={`nav-link ${user ? "block" : "hidden"}`} to={VENUES_PAGE_URL}>
 						Venues
 					</Link>
-					<Link className="nav-link" to="/about">
-						About
-					</Link>
-					<Link className="nav-link" to="/contact">
-						Contact
-					</Link>
-					<Link className="nav-link" to="/login">
+
+					<Link className={`nav-link ${!user ? "block" : "hidden"}`} to={LOGIN_PAGE_URL}>
 						Login
 					</Link>
-				</div>
-				<div className="flex">
-					{/* Dark mode toggle button */}
+					<Link className={`nav-link ${!user ? "block" : "hidden"}`} to={REGISTER_PAGE_URL}>
+						Register
+					</Link>
+
 					<button
+						className={`nav-link ${user ? "block" : "hidden"}`}
 						type="button"
-						className="cursor-pointer hover:transform hover:scale-130 transition-transform"
-						onClick={() => setIsDarkMode(!isDarkMode)}
+						onClick={() => {
+							logout()
+							navigate(LOGIN_PAGE_URL)
+						}}
 					>
-						{isDarkMode ? <FaMoon /> : <FaSun />}
+						Logout
 					</button>
 				</div>
 			</nav>
