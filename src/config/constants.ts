@@ -14,7 +14,7 @@ export const CREATE_VENUE_PAGE_URL = "/create-venue"
 export const EDIT_VENUE_PAGE_URL = "/edit-venue/:id"
 export const BOOKING_PAGE_URL = "/booking"
 
-export const VENUES_ENDPOINT = "/holidaze/venues"
+export const VENUES_ENDPOINT = `${HOLIDAZE_ENDPOINT}/venues`
 export const CONTACT_PAGE_URL = "/contact"
 
 // API URLs
