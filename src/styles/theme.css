@@ -9,4 +9,11 @@
 	--color-bg-hover: var(--color-bg-hover, #d4d2d2);
 	--color-btn-bg-hover: var(--color-btn-bg-hover, #dfdfdf);
 	--color-btn-text-hover: var(--color-btn-text-hover, #333333);
+
+	--breakpoint-2xs: 320px;
+	--breakpoint-sm: 640px;
+	--breakpoint-md: 768px;
+	--breakpoint-lg: 1024px;
+	--breakpoint-xl: 1280px;
+	--breakpoint-2xl: 1536px;
 }

@@ -1,5 +1,5 @@
 .btn {
-	@apply bg-btn text-btn-text hover:bg-btn-bg-hover hover:text-btn-text-hover text-center  px-4 py-2 transition-colors duration-300 cursor-pointer;
+	@apply bg-btn text-btn-text hover:bg-btn-bg-hover hover:text-btn-text-hover text-center px-4 py-2 transition-colors duration-300 cursor-pointer;
 }
 
 .card {

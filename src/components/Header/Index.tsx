@@ -16,14 +16,11 @@ export const Header = () => {
 			<h2 className="text-3xl font-bold color-text">Holidaze</h2>
 			<nav className="color-text flex items-center gap-8 justify-center">
 				<div className="flex space-x-4">
-					<Link className={`nav-link ${user ? "block" : "hidden"}`} to="/">
-						Home
+					<Link className={`nav-link`} to={VENUES_PAGE_URL}>
+						Venues
 					</Link>
 					<Link className={`nav-link ${user ? "block" : "hidden"}`} to={PROFILE_PAGE_URL}>
 						Profile
-					</Link>
-					<Link className={`nav-link ${user ? "block" : "hidden"}`} to={VENUES_PAGE_URL}>
-						Venues
 					</Link>
 
 					<Link className={`nav-link ${!user ? "block" : "hidden"}`} to={LOGIN_PAGE_URL}>
