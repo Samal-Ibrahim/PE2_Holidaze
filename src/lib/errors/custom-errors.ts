@@ -1,5 +1,3 @@
-// Simple custom error classes
-
 export class AuthenticationError extends Error {
 	constructor(message = "Authentication required") {
 		super(message)

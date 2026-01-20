@@ -9,7 +9,6 @@ export const handleError = (error: unknown): void => {
 	}
 }
 
-// Get error message from error object
 export const getErrorMessage = (error: unknown): string => {
 	if (error instanceof Error) {
 		return error.message

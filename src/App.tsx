@@ -10,7 +10,7 @@ function App() {
 			<div className="w-full">
 				<Header />
 			</div>
-			<main className="">
+			<main>
 				<ToastContainer position="top-right" autoClose={2000} />
 				<AppRoutes />
 			</main>

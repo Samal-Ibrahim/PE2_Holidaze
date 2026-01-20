@@ -1,11 +1,15 @@
 .btn {
-	@apply bg-btn text-btn-text hover:bg-btn-bg-hover hover:text-btn-text-hover text-center px-4 py-2 transition-colors duration-300 cursor-pointer;
+	@apply bg-btn text-btn-text hover:bg-btn-bg-hover hover:text-btn-text-hover text-center px-4 py-2 transition-colors duration-300 cursor-pointer active:bg-white active:text-black;
 }
 
 .card {
-	@apply rounded-xl border bg-white p-4;
+	@apply bg-gray-50 p-4 shadow flex flex-col gap-4 w-full transition-all duration-300 ease-in-out cursor-pointer hover:bg-white hover:shadow-xl;
 }
 
 .nav-link {
-	@apply text-text cursor-pointer hover:bg-btn-bg-hover hover:text-btn-text-hover text-center;
+	@apply text-text cursor-pointer hover:bg-btn-bg-hover hover:text-btn-text-hover text-center transition-all duration-300 ease-in-out active:bg-white active:text-black;
+}
+
+.skeleton {
+	@apply bg-gray-300 animate-pulse;
 }

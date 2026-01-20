@@ -9,7 +9,7 @@ export default async function fetchVenues(): Promise<ApiResponse<Venue[]>> {
 		throw new Error("API key is not defined in environment variables")
 	}
 	try {
-		const response = await fetch(`${VENUES_ENDPOINT}?_owner=true&_bookings=true&limit=12`, {
+		const response = await fetch(`${VENUES_ENDPOINT}?limit=100&_owner=true&_bookings=true`, {
 			method: "GET",
 			headers: {
 				accept: "application/json",
@@ -26,6 +26,6 @@ export default async function fetchVenues(): Promise<ApiResponse<Venue[]>> {
 			data: normalizeVenues(data.data),
 		}
 	} catch (error) {
-		throw new Error(`Error fetching venues: ${error}`)
+		throw new Error(error instanceof Error ? error.message : "An unknown error occurred")
 	}
 }
