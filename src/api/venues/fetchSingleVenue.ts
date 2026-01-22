@@ -1,9 +1,11 @@
 import { VENUES_ENDPOINT } from "@/config/constants"
 import type { ApiResponse } from "@/types"
-import type { RawVenue, Venue } from "@/types/venue"
-import { normalizeVenues } from "@/utils/normalizers/normalizeVenues"
+import type { Venue } from "@/types/venue"
+import type { RawVenues } from "@/types/venues"
 
-export default async function fetchSingleVenue(id: string): Promise<ApiResponse<Venue[]>> {
+import { normalizeSingleVenue } from "@/utils/normalizers/normalizeSingleVenue"
+
+export default async function fetchSingleVenue(id: string): Promise<ApiResponse<Venue>> {
 	try {
 		const response = await fetch(`${VENUES_ENDPOINT}/${id}?_owner=true&_bookings=true`, {
 			method: "GET",
@@ -11,11 +13,11 @@ export default async function fetchSingleVenue(id: string): Promise<ApiResponse<
 				accept: "application/json",
 			},
 		})
-		const data: ApiResponse<RawVenue[]> = await response.json()
-		console.log("d", data)
+		const data: ApiResponse<RawVenues> = await response.json()
+		console.log("d", data.data)
 		return {
 			...data,
-			data: normalizeVenues(data.data),
+			data: normalizeSingleVenue(data.data),
 		}
 	} catch (error) {
 		throw new Error(error instanceof Error ? error.message : "An unknown error occurred")

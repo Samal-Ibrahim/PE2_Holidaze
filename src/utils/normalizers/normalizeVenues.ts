@@ -1,7 +1,7 @@
 import imgNA from "@/assets/img-NA.png"
-import type { RawVenue, Venue } from "@/types/venue"
+import type { RawVenues, Venues } from "@/types/venues"
 
-export const normalizeVenues = (venues: RawVenue[]): Venue[] => {
+export const normalizeVenues = (venues: RawVenues[]): Venues[] => {
 	const normalizedVenues = venues.map((venue) => {
 		return {
 			...venue,

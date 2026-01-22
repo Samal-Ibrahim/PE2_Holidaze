@@ -1,9 +1,9 @@
 import { VENUES_ENDPOINT } from "@/config/constants"
 import type { ApiResponse } from "@/types"
-import type { RawVenue, Venue } from "@/types/venue"
+import type { RawVenues, Venues } from "@/types/venues"
 import { normalizeVenues } from "@/utils/normalizers/normalizeVenues"
 
-export default async function fetchVenues(): Promise<ApiResponse<Venue[]>> {
+export default async function fetchVenues(): Promise<ApiResponse<Venues[]>> {
 	const apiKey = import.meta.env.VITE_API_KEY || ""
 	if (!apiKey) {
 		throw new Error("API key is not defined in environment variables")
@@ -20,11 +20,12 @@ export default async function fetchVenues(): Promise<ApiResponse<Venue[]>> {
 		if (!response.ok) {
 			throw new Error("Failed to fetch venues")
 		}
-		const data: ApiResponse<RawVenue[]> = await response.json()
+		const data: ApiResponse<RawVenues[]> = await response.json()
+		console.log(data.data)
 		return {
 			...data,
 			data: normalizeVenues(data.data),
-		}
+		} as ApiResponse<Venues[]>
 	} catch (error) {
 		throw new Error(error instanceof Error ? error.message : "An unknown error occurred")
 	}

@@ -1,5 +1,5 @@
-export type Venue = {
-    	id: string
+export type RawVenues = {
+	id: string
 	name: string
 	description: string
 	media: [
@@ -41,7 +41,7 @@ export type Venue = {
 			alt: string
 		}
 	}
-	bookings:
+	bookings: [
 		{
 			id: string
 			dateFrom: string
@@ -62,9 +62,11 @@ export type Venue = {
 					alt: string
 				}
 			}
-		}[],
-	
+		},
+	]
 	_count: {
 		bookings: number
 	}
 }
+
+export type Venues = RawVenues
