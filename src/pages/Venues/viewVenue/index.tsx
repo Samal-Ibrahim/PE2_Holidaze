@@ -124,7 +124,7 @@ const viewVenue = () => {
 									name="checkin"
 									type="date"
 									min={new Date().toISOString().split("T")[0]}
-									className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+									className="w-full px-4 py-3 border focus:outline-none focus:ring-2 focus:ring-gray-500"
 								/>
 							</div>
 							<div>
@@ -135,7 +135,7 @@ const viewVenue = () => {
 									type="date"
 									name="checkout"
 									min={new Date().toISOString().split("T")[0]}
-									className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+									className="w-full px-4 py-3 border  focus:outline-none focus:ring-2 focus:ring-gray-500"
 								/>
 							</div>
 							<div>
@@ -148,14 +148,14 @@ const viewVenue = () => {
 									min="1"
 									max={venue.maxGuests}
 									defaultValue="1"
-									className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+									className="w-full px-4 py-3 border focus:outline-none focus:ring-2 focus:ring-gray-500"
 								/>
 							</div>
 						</div>
 
 						<button
 							type="button"
-							className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors"
+							className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 transition-colors"
 						>
 							Reserve
 						</button>
