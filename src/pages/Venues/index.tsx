@@ -2,16 +2,17 @@ import { useQuery } from "@tanstack/react-query"
 import { useMemo, useState } from "react"
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"
 import { FaPerson } from "react-icons/fa6"
+import { Link } from "react-router-dom"
 import fetchVenues from "@/api/venues/fetchVenues"
 import Input from "@/components/Inputs/Input"
 import StarRating from "@/components/RatingStars"
 import CardsSkeleton from "@/components/Skeleton/CardsSkeleton"
 import type { Venue } from "@/types/venue"
 import AmenitiesFilter from "./utils/AmenitiesFilter"
+import CityFilter from "./utils/CityFilter"
 import PriceFilter from "./utils/PriceFilter"
 import RatingFilter from "./utils/RatingFilter"
 import SortFilter from "./utils/SortFilter"
-import CityFilter from "./utils/CityFilter"
 
 const Venues = () => {
 	// Filters states
@@ -112,7 +113,7 @@ const Venues = () => {
 					{displayedVenues && displayedVenues.length > 0 ? (
 						<div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
 							{displayedVenues.map((venue: Venue) => (
-								<div key={venue.id} className="card">
+								<Link key={venue.id} to={`/venues/${venue.id}`} className="card block">
 									<div className="shrink-0 w-full h-48 overflow-hidden">
 										<img
 											src={venue.media[0]?.url}
@@ -138,7 +139,7 @@ const Venues = () => {
 											</div>
 										</div>
 									</div>
-								</div>
+								</Link>
 							))}
 						</div>
 					) : (

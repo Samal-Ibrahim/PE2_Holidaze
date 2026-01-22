@@ -13,6 +13,7 @@ import NotFound from "@/pages/NotFound"
 import ProfileMe from "@/pages/Profile/ProfileMe"
 import ProfileUsers from "@/pages/Profile/ProfileUsers"
 import Venues from "@/pages/Venues"
+import ViewVenue from "@/pages/Venues/viewVenue"
 import IsLoggedIn from "@/routes/LoggedInRoute"
 import ProtectedRoute from "@/routes/ProtectedRoute"
 
@@ -21,6 +22,7 @@ export default function AppRoutes() {
 		<Routes>
 			<Route path={CONTACT_PAGE_URL} element={<Contact />} />
 			<Route path={VENUES_PAGE_URL} element={<Venues />} />
+			<Route path={`${VENUES_PAGE_URL}venues/:id`} element={<ViewVenue />} />
 			<Route element={<IsLoggedIn />}>
 				<Route path={LOGIN_PAGE_URL} element={<Login />} />
 				<Route path={REGISTER_PAGE_URL} element={<Register />} />
