@@ -23,7 +23,8 @@ const Venues = () => {
 	const [selectedCities, setSelectedCities] = useState<string[]>([])
 	const [amenitiesFilter, setAmenitiesFilter] = useState<string[]>([])
 	const [sortOption, setSortOption] = useState<string>("latest")
-
+	const [isFilterOpen, setFilterOpen] = useState<boolean>(false)
+	console.log(isFilterOpen)
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ["venues"],
 		queryFn: () => fetchVenues(),
@@ -85,16 +86,26 @@ const Venues = () => {
 				value={searchQuery}
 				onChange={(e) => setSearchQuery(e.target.value)}
 			/>
-			<div className="grid lg:grid-cols-[auto_1fr] gap-4 h-full shadow-md">
-				<div className="  w-60 h-full 2xs:hidden lg:block">
-					<div
-						className="h-full bg-gray-50
-					 p-2 shadow"
-					>
-						<h5 className="font-bold mb-4">Filter</h5>
+			<div className="grid md:grid-cols-[auto_1fr] gap-4 h-full shadow-md">
+				<aside
+					className={`sm:block 2xs:fixed w-full bg-green-200/75 left-0 bottom-0 p-4 2xs:h-170 overflow-y-scroll justify-center ${isFilterOpen ? "" : "translate-y-155"}`}
+				>
+					<div className="w-full bg-green-400 lg:block 2xs:flex 2xs:justify-center">
+						<button
+							type="button"
+							onClick={() => {
+								setFilterOpen(!isFilterOpen)
+							}}
+							className="bg-gray-300 px-4 py-2 cursor-pointer"
+						>
+							Filter
+						</button>
+					</div>
+					<div className={`w-full bg-gray-200   ${isFilterOpen ? "block" : "hidden"}`}>
+						<h5 className="font-bold mb-6">Sorting by</h5>
 						<div className="flex flex-col gap-4">
 							{/* Sort */}
-							<SortFilter sortOption={sortOption} onSortChange={setSortOption} />{" "}
+							<SortFilter sortOption={sortOption} onSortChange={setSortOption} />
 							<CityFilter
 								selectedCities={selectedCities}
 								onCityChange={setSelectedCities}
@@ -108,7 +119,7 @@ const Venues = () => {
 							<RatingFilter ratingFilter={ratingFilter} setRatingFilter={setRatingFilter} />
 						</div>
 					</div>
-				</div>
+				</aside>
 				<div>
 					{displayedVenues && displayedVenues.length > 0 ? (
 						<div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
