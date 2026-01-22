@@ -7,8 +7,8 @@
 		"dev": "vite",
 		"build": "tsc -b && vite build",
 		"preview": "vite preview",
-		"format": "biome check --write",
-		"lint": "biome check",
+		"format": "biome format --write .",
+		"lint": "biome check --write .",
 		"test": "vitest"
 	},
 	"dependencies": {
@@ -27,8 +27,16 @@
 		"@types/react-dom": "^19.2.3",
 		"@vitejs/plugin-react": "^5.1.1",
 		"globals": "^16.5.0",
+		"prettier-plugin-tailwindcss": "^0.7.2",
+		"tailwind-scrollbar-hide": "^4.0.0",
 		"typescript": "~5.9.3",
 		"typescript-eslint": "^8.46.4",
 		"vite": "^7.2.4"
+	},
+	"tailwind-class-sorter.classRegex": {
+		"rescript": [
+			"className\\w*?=\\w*(\"[\\s\\S]+?\")|className\\w*?=\\w*?\\{([\\s\\S]+?)\\}",
+			"\"(.+?)\""
+		]
 	}
 }

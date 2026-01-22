@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"
 import { FaPerson } from "react-icons/fa6"
 import { Link } from "react-router-dom"
@@ -24,7 +24,18 @@ const Venues = () => {
 	const [amenitiesFilter, setAmenitiesFilter] = useState<string[]>([])
 	const [sortOption, setSortOption] = useState<string>("latest")
 	const [isFilterOpen, setFilterOpen] = useState<boolean>(false)
-	console.log(isFilterOpen)
+	useEffect(() => {
+		if (isFilterOpen) {
+			document.body.style.overflow = "hidden"
+		} else {
+			document.body.style.overflow = ""
+		}
+
+		return () => {
+			document.body.style.overflow = ""
+		}
+	}, [isFilterOpen])
+
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ["venues"],
 		queryFn: () => fetchVenues(),
@@ -86,23 +97,26 @@ const Venues = () => {
 				value={searchQuery}
 				onChange={(e) => setSearchQuery(e.target.value)}
 			/>
-			<div className="grid md:grid-cols-[auto_1fr] gap-4 h-full shadow-md">
+			<div className="gap-4 grid lg:grid-cols-[auto_1fr] shadow-md h-full">
 				<aside
-					className={`sm:block 2xs:fixed w-full bg-green-200/75 left-0 bottom-0 p-4 2xs:h-170 overflow-y-scroll justify-center ${isFilterOpen ? "" : "translate-y-155"}`}
+					className={`2xs:fixed lg:static flex lg:w-60 2xs:w-full  left-0 bottom-0 p-2 2xs:overflow-y-scroll lg:h-full lg:overflow-hidden justify-center hide-scrollbar lg:bg-gray-50 ${isFilterOpen ? "max-h-screen bg-black/35 scroll-none" : "h-14 bg-black/15"}`}
 				>
-					<div className="w-full bg-green-400 lg:block 2xs:flex 2xs:justify-center">
+					<div className="lg:hidden 2xs:fixed flex justify-center w-full ">
 						<button
 							type="button"
 							onClick={() => {
 								setFilterOpen(!isFilterOpen)
 							}}
-							className="bg-gray-300 px-4 py-2 cursor-pointer"
+							className={`bg-gray-50 shadow px-4 py-2 cursor-pointer active:bg-gray ${isFilterOpen ? "mt-2" : ""}`}
 						>
 							Filter
 						</button>
 					</div>
-					<div className={`w-full bg-gray-200   ${isFilterOpen ? "block" : "hidden"}`}>
-						<h5 className="font-bold mb-6">Sorting by</h5>
+
+					<div
+						className={`2xs:w-full md:w-md h-full bg-gray-50 p-4 lg:block ${isFilterOpen ? "block" : "hidden"}`}
+					>
+						<h5 className="mb-6 font-bold">Sorting by</h5>
 						<div className="flex flex-col gap-4">
 							{/* Sort */}
 							<SortFilter sortOption={sortOption} onSortChange={setSortOption} />
@@ -122,20 +136,20 @@ const Venues = () => {
 				</aside>
 				<div>
 					{displayedVenues && displayedVenues.length > 0 ? (
-						<div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4">
+						<div className="gap-4 grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
 							{displayedVenues.map((venue: Venue) => (
-								<Link key={venue.id} to={`/venues/${venue.id}`} className="card block">
-									<div className="shrink-0 w-full h-48 overflow-hidden">
+								<Link key={venue.id} to={`/venues/${venue.id}`} className="block card">
+									<div className="w-full h-48 overflow-hidden shrink-0">
 										<img
 											src={venue.media[0]?.url}
 											alt={venue.name}
-											className="object-cover shrink-0 w-full h-full "
+											className="w-full h-full object-cover shrink-0"
 										/>
 									</div>
-									<div className="flex flex-col gap-2 w-full h-full ">
+									<div className="flex flex-col gap-2 w-full h-full">
 										<div className="flex flex-row justify-between">
 											<div className="w-50">
-												<h5 className="line-clamp-2 truncate">{venue.name}</h5>
+												<h5 className="truncate line-clamp-2">{venue.name}</h5>
 											</div>
 											<StarRating rating={venue.rating} />
 										</div>
@@ -154,19 +168,19 @@ const Venues = () => {
 							))}
 						</div>
 					) : (
-						<div className="bg-gray-50 w-full h-full flex justify-center items-center">
+						<div className="flex justify-center items-center bg-gray-50 w-full h-full">
 							<p>No venues, please try a different search.</p>
 						</div>
 					)}
 				</div>
 			</div>
-			<div className="bg-gray-50 container flex flex-col items-center p-4">
+			<div className="flex flex-col items-center bg-gray-50 p-4 container">
 				{filteredVenues.length > 12 && (
 					<p>
 						Showing {displayedVenues.length} of {filteredVenues.length} venues.
 					</p>
 				)}
-				<div className="flex flex-row justify-between max-w-md  p-2 w-full mt-4">
+				<div className="flex flex-row justify-between mt-4 p-2 w-full max-w-md">
 					<button
 						type="button"
 						onClick={() => setPage(currentPage > 1 ? currentPage - 1 : 1)}

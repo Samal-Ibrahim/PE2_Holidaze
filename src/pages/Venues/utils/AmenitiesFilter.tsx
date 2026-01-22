@@ -15,28 +15,44 @@ const AmenitiesFilter = ({ amenitiesFilter, setAmenitiesFilter }: Props) => {
 		<div>
 			<h5>Amenities</h5>
 			<div className="flex flex-row gap-2">
-				<input type="checkbox" id="wifi" onChange={()=> {
-					handleCheckboxChange("wifi")
-				}} />
+				<input
+					type="checkbox"
+					id="wifi"
+					onChange={() => {
+						handleCheckboxChange("wifi")
+					}}
+				/>
 				<label htmlFor="wifi">WiFi</label>
 			</div>
 			<div className="flex flex-row gap-2">
-				<input type="checkbox" id="parking" onChange={() => {
-					handleCheckboxChange("parking")
-				}} />
-			
+				<input
+					type="checkbox"
+					id="parking"
+					onChange={() => {
+						handleCheckboxChange("parking")
+					}}
+				/>
+
 				<label htmlFor="parking">Parking</label>
 			</div>
 			<div className="flex flex-row gap-2">
-				<input type="checkbox" id="breakfast" onChange={() => {
-					handleCheckboxChange("breakfast")
-				}} />
+				<input
+					type="checkbox"
+					id="breakfast"
+					onChange={() => {
+						handleCheckboxChange("breakfast")
+					}}
+				/>
 				<label htmlFor="breakfast">Breakfast</label>
 			</div>
 			<div className="flex flex-row gap-2">
-				<input type="checkbox" id="pets" onChange={() => {
-					handleCheckboxChange("pets")
-				}} />
+				<input
+					type="checkbox"
+					id="pets"
+					onChange={() => {
+						handleCheckboxChange("pets")
+					}}
+				/>
 				<label htmlFor="pets">Pets Allowed</label>
 			</div>
 		</div>

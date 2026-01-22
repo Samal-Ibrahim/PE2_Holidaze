@@ -111,6 +111,15 @@ h6 {
 	font-size: 1rem;
 }
 
+.hide-scrollbar {
+  -ms-overflow-style: none;     
+  scrollbar-width: none;        
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;               
+}
+
+
 .nav-link {
 	text-decoration: none;
 	color: var(--color-text);

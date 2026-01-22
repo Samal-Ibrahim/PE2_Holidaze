@@ -12,7 +12,7 @@ export default async function fetchSingleVenue(id: string): Promise<ApiResponse<
 			},
 		})
 		const data: ApiResponse<RawVenue[]> = await response.json()
-		console.log("d",data)
+		console.log("d", data)
 		return {
 			...data,
 			data: normalizeVenues(data.data),

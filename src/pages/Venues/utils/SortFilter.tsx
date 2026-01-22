@@ -32,4 +32,3 @@ const SortFilter = ({ sortOption, onSortChange }: Props) => {
 }
 
 export default SortFilter
-

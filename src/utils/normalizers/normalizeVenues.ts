@@ -10,9 +10,7 @@ export const normalizeVenues = (venues: RawVenue[]): Venue[] => {
 				(venue.description ?? "").trim() === "" ? "No description available" : venue.description,
 			media: (venue.media && venue.media.length > 0
 				? [venue.media[0]]
-				: [{ url: imgNA, alt: "Image not available" }]) as [
-				{ url: string; alt: string },
-			],
+				: [{ url: imgNA, alt: "Image not available" }]) as [{ url: string; alt: string }],
 			price: venue.price ?? 0,
 			maxGuests: venue.maxGuests ?? 1,
 			rating: venue.rating ?? 0,
