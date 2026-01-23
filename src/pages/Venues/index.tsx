@@ -17,13 +17,14 @@ import SortFilter from "./utils/SortFilter"
 const Venues = () => {
 	// Filters states
 	const [searchQuery, setSearchQuery] = useState("")
-	const [currentPage, setPage] = useState(1)
-	const [priceRange, setPriceRange] = useState<number>(1000)
+	const [currentPage, setPage] = useState<number>(1)
+	const [priceRange, setPriceRange] = useState<number>(10000)
 	const [ratingFilter, setRatingFilter] = useState<number[]>([])
 	const [selectedCities, setSelectedCities] = useState<string[]>([])
 	const [amenitiesFilter, setAmenitiesFilter] = useState<string[]>([])
 	const [sortOption, setSortOption] = useState<string>("latest")
 	const [isFilterOpen, setFilterOpen] = useState<boolean>(false)
+
 	useEffect(() => {
 		if (isFilterOpen) {
 			document.body.style.overflow = "hidden"
@@ -37,8 +38,8 @@ const Venues = () => {
 	}, [isFilterOpen])
 
 	const { data, isLoading, isError, error } = useQuery({
-		queryKey: ["venues"],
-		queryFn: () => fetchVenues(),
+		queryKey: ["venues", currentPage],
+		queryFn: () => fetchVenues(currentPage),
 	})
 
 	const venues = data?.data ?? []
@@ -54,15 +55,16 @@ const Venues = () => {
 
 		const locationMatch =
 			selectedCities.length === 0 ||
-			(venue.location?.city && selectedCities.includes(venue.location?.city?.toLowerCase()))
+			(venue.location?.city &&
+				selectedCities.map((c) => c.toLowerCase()).includes(venue.location.city.toLowerCase()))
 
-		const ratingMatch = ratingFilter.length === 0 || ratingFilter.includes(venue.rating)
+		const ratingMatch = ratingFilter.length === 0 || ratingFilter.includes(Math.round(venue.rating))
 
-		const amenitiesMatch = amenitiesFilter.every(
-			(amenity) => venue.meta?.[amenity as keyof typeof venue.meta] === true
-		)
+		const amenitiesMatch =
+			amenitiesFilter.length === 0 ||
+			amenitiesFilter.every((amenity) => venue.meta?.[amenity as keyof Venue["meta"]] === true)
 
-		const priceMatch = priceRange >= venue.price
+		const priceMatch = (venue.price ?? 0) <= priceRange
 
 		return matchesSearch && locationMatch && ratingMatch && amenitiesMatch && priceMatch
 	})
@@ -84,8 +86,6 @@ const Venues = () => {
 		}
 	}, [filteredVenues, sortOption])
 
-	const displayedVenues = sortedVenues.slice((currentPage - 1) * 12, currentPage * 12)
-
 	if (isLoading) return <CardsSkeleton />
 	if (isError) return <p>Error: {(error as Error).message}</p>
 
@@ -99,7 +99,7 @@ const Venues = () => {
 			/>
 			<div className="gap-4 grid lg:grid-cols-[auto_1fr] shadow-md h-full">
 				<aside
-					className={`2xs:fixed lg:static flex lg:w-60 2xs:w-full  left-0 bottom-0 p-2 2xs:overflow-y-scroll lg:h-full lg:overflow-hidden justify-center hide-scrollbar lg:bg-gray-50 ${isFilterOpen ? "max-h-screen pt-10 bg-black/35 scroll-none" : "h-14 bg-black/15"}`}
+					className={`2xs:fixed lg:static flex lg:w-60 2xs:w-full left-0 bottom-0 p-2 2xs:overflow-y-scroll lg:h-full lg:overflow-hidden justify-center hide-scrollbar lg:bg-gray-50 ${isFilterOpen ? "max-h-screen pt-10 bg-black/35 scroll-none" : "h-14 bg-black/15"}`}
 				>
 					<div className="lg:hidden 2xs:absolute flex justify-center w-full ">
 						<button
@@ -135,9 +135,9 @@ const Venues = () => {
 					</div>
 				</aside>
 				<div>
-					{displayedVenues && displayedVenues.length > 0 ? (
+					{sortedVenues && sortedVenues.length > 0 ? (
 						<div className="gap-4 grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
-							{displayedVenues.map((venue: Venue) => (
+							{sortedVenues.map((venue: Venue) => (
 								<Link key={venue.id} to={`/venues/${venue.id}`} className="block card">
 									<div className="w-full h-48 overflow-hidden shrink-0">
 										<img
@@ -154,7 +154,14 @@ const Venues = () => {
 											<StarRating rating={venue.rating} />
 										</div>
 										<div>
-											<p>{venue.location?.address ?? "No address available"}</p>
+											<p>{venue.location?.address}</p>
+											<p>
+												{new Date(venue.created).toLocaleDateString("en-GB", {
+													day: "numeric",
+													month: "short",
+													year: "numeric",
+												})}
+											</p>
 										</div>
 										<div className="flex flex-row justify-between">
 											<p className="text-sm">Night / ${venue.price}</p>
@@ -175,9 +182,9 @@ const Venues = () => {
 				</div>
 			</div>
 			<div className="flex flex-col items-center bg-gray-50 p-4 container">
-				{filteredVenues.length > 12 && (
+				{filteredVenues.length > 100 && (
 					<p>
-						Showing {displayedVenues.length} of {filteredVenues.length} venues.
+						Showing {sortedVenues.length} of {filteredVenues.length} venues.
 					</p>
 				)}
 				<div className="flex flex-row justify-between mt-4 p-2 w-full max-w-md">
@@ -190,16 +197,14 @@ const Venues = () => {
 					</button>
 
 					<div>
-						Page {currentPage} of {Math.ceil(filteredVenues.length / 12)}
+						Page {data?.meta?.currentPage as number} of {data?.meta?.pageCount as number}
 					</div>
 
 					<button
 						type="button"
-						onClick={() =>
-							setPage(
-								currentPage < Math.ceil(filteredVenues.length / 12) ? currentPage + 1 : currentPage
-							)
-						}
+						onClick={() => {
+							setPage(currentPage ? currentPage + 1 : currentPage)
+						}}
 						className="btn"
 					>
 						<FaArrowRight />

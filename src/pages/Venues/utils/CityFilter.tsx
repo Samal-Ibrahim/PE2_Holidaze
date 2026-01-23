@@ -30,12 +30,13 @@ const CityFilter = ({ selectedCities, onCityChange, venues }: Props) => {
 
 	return (
 		<div className="flex flex-col gap-4">
-			<h5>Filter by country</h5>
+			<h5>Filter by city</h5>
 			<div className="flex flex-col gap-2 bg-white">
 				<div className="flex flex-row items-center align-center w-full gap-2">
 					<input
 						type="checkbox"
 						name="newyork"
+						checked={selectedCities.includes("new york")}
 						id="newyork"
 						onChange={() => handleToggle("new york")}
 					/>
@@ -50,7 +51,13 @@ const CityFilter = ({ selectedCities, onCityChange, venues }: Props) => {
 					</label>
 				</div>
 				<div className="flex flex-row items-center align-center w-full gap-2">
-					<input type="checkbox" name="rome" id="rome" onChange={() => handleToggle("rome")} />
+					<input
+						type="checkbox"
+						name="rome"
+						checked={selectedCities.includes("rome")}
+						id="rome"
+						onChange={() => handleToggle("rome")}
+					/>
 
 					<label htmlFor="rome" className="block font-medium text-gray-700 text-sm">
 						Rome ({cityCounts.rome})
@@ -60,6 +67,7 @@ const CityFilter = ({ selectedCities, onCityChange, venues }: Props) => {
 					<input
 						type="checkbox"
 						name="tokyo"
+						checked={selectedCities.includes("tokyo")}
 						id="tokyo"
 						value="tokyo"
 						onChange={() => handleToggle("tokyo")}
@@ -69,7 +77,13 @@ const CityFilter = ({ selectedCities, onCityChange, venues }: Props) => {
 					</label>
 				</div>
 				<div className="flex flex-row items-center align-center w-full gap-2">
-					<input type="checkbox" name="paris" id="paris" onChange={() => handleToggle("paris")} />
+					<input
+						type="checkbox"
+						name="paris"
+						checked={selectedCities.includes("paris")}
+						id="paris"
+						onChange={() => handleToggle("paris")}
+					/>
 					<label htmlFor="paris" className="block font-medium text-gray-700 text-sm">
 						Paris ({cityCounts.paris})
 					</label>
@@ -79,6 +93,7 @@ const CityFilter = ({ selectedCities, onCityChange, venues }: Props) => {
 						type="checkbox"
 						name="london"
 						id="london"
+						checked={selectedCities.includes("london")}
 						value="london"
 						onChange={() => handleToggle("london")}
 					/>
@@ -90,6 +105,7 @@ const CityFilter = ({ selectedCities, onCityChange, venues }: Props) => {
 					<input
 						type="checkbox"
 						name="barcelona"
+						checked={selectedCities.includes("barcelona")}
 						id="barcelona"
 						onChange={() => handleToggle("barcelona")}
 					/>
@@ -101,6 +117,7 @@ const CityFilter = ({ selectedCities, onCityChange, venues }: Props) => {
 					<input
 						type="checkbox"
 						name="amsterdam"
+						checked={selectedCities.includes("amsterdam")}
 						id="amsterdam"
 						onChange={() => handleToggle("amsterdam")}
 					/>
@@ -110,7 +127,13 @@ const CityFilter = ({ selectedCities, onCityChange, venues }: Props) => {
 					</label>
 				</div>
 				<div className="flex flex-row items-center align-center w-full gap-2">
-					<input type="checkbox" name="dubai" id="dubai" onChange={() => handleToggle("dubai")} />
+					<input
+						type="checkbox"
+						name="dubai"
+						checked={selectedCities.includes("dubai")}
+						id="dubai"
+						onChange={() => handleToggle("dubai")}
+					/>
 					<label htmlFor="dubai" className="block font-medium text-gray-700 text-sm">
 						Dubai ({cityCounts.dubai})
 					</label>
@@ -119,6 +142,7 @@ const CityFilter = ({ selectedCities, onCityChange, venues }: Props) => {
 					<input
 						type="checkbox"
 						name="sydney"
+						checked={selectedCities.includes("sydney")}
 						id="sydney"
 						onChange={() => handleToggle("sydney")}
 					/>

@@ -10,7 +10,7 @@ const PriceFilter = ({ priceRange, setPriceRange }: Props) => {
 			<input
 				type="range"
 				min="5"
-				max="1000"
+				max="10000"
 				value={priceRange}
 				onChange={(e) => setPriceRange(Number(e.target.value))}
 				className="w-full"

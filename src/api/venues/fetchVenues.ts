@@ -3,20 +3,23 @@ import type { ApiResponse } from "@/types"
 import type { RawVenues, Venues } from "@/types/venues"
 import { normalizeVenues } from "@/utils/normalizers/normalizeVenues"
 
-export default async function fetchVenues(): Promise<ApiResponse<Venues[]>> {
+export default async function fetchVenues(page: number): Promise<ApiResponse<Venues[]>> {
 	const apiKey = import.meta.env.VITE_API_KEY || ""
 	if (!apiKey) {
 		throw new Error("API key is not defined in environment variables")
 	}
 	try {
-		const response = await fetch(`${VENUES_ENDPOINT}?limit=100&_owner=true&_bookings=true`, {
-			method: "GET",
-			headers: {
-				accept: "application/json",
-				"content-type": "application/json",
-				"X-Noroff-API-Key": apiKey,
-			},
-		})
+		const response = await fetch(
+			`${VENUES_ENDPOINT}?sort=created&limit=100&_owner=true&_bookings=true&page=${page}`,
+			{
+				method: "GET",
+				headers: {
+					accept: "application/json",
+					"content-type": "application/json",
+					"X-Noroff-API-Key": apiKey,
+				},
+			}
+		)
 		if (!response.ok) {
 			throw new Error("Failed to fetch venues")
 		}

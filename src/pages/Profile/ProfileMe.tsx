@@ -124,7 +124,7 @@ const ProfileMe = () => {
 												<strong>Booking ID:</strong> {booking.id}
 											</p>
 											<p>
-												<strong>Date From:</strong>{" "}
+												<strong>Date From:</strong>
 												{new Date(booking.dateFrom).toLocaleDateString()}
 											</p>
 											<p>
@@ -137,7 +137,7 @@ const ProfileMe = () => {
 												<strong>Booked On:</strong> {new Date(booking.created).toLocaleDateString()}
 											</p>
 											<p>
-												<strong>Venue Location:</strong> {booking.venue?.location.address},{" "}
+												<strong>Venue Location:</strong> {booking.venue?.location.address},
 												{booking.venue?.location.city}, {booking.venue?.location.country}
 											</p>
 										</div>
@@ -153,29 +153,56 @@ const ProfileMe = () => {
 						{profileDetails.venues?.length === 0 ? (
 							<p>No venues found.</p>
 						) : (
-							<div>
+							<div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+								{" "}
 								{profileDetails.venues?.map((venue) => (
-									<div key={venue.id} className="border p-4 mb-4 flex flex-row gap-4 ">
-										<div>
-											<img
-												src={venue.media[0]?.url}
-												alt={venue.media[0]?.alt || "Venue Image"}
-												className="w-40"
-											/>
-										</div>
-										<div>
-											<h4 className="text-xl font-bold mb-2">{venue.name}</h4>
-											<p>{venue.description}</p>
-											<p>
-												<strong>Location:</strong> {venue.location.address}, {venue.location.city},{" "}
-												{venue.location.country}
+									<div
+										key={venue.id}
+										className="bg-white shadow-sm hover:shadow-md transition-shadow"
+									>
+										<img
+											src={venue.media?.[0]?.url}
+											alt={venue.media?.[0]?.alt || "Venue image"}
+											className="h-44 w-full object-cover"
+										/>
+
+										<div className="p-4">
+											<h4 className="text-lg font-semibold leading-tight">{venue.name}</h4>
+											<p className="mt-1 text-sm text-neutral-600 line-clamp-2">
+												{venue.description}
 											</p>
-											<p>
-												<strong>Price:</strong> ${venue.price} per night
-											</p>
-											<p>
-												<strong>Max Guests:</strong> {venue.maxGuests}
-											</p>
+
+											<div className="mt-3 space-y-1 text-sm text-neutral-700">
+												<p className="truncate">
+													<span className="font-semibold">Location:</span> {venue.location?.address}
+													, {venue.location?.city}
+												</p>
+
+												<div className="flex items-center justify-between">
+													<p>
+														<span className="font-semibold">Price:</span> ${venue.price}/night
+													</p>
+													<p>
+														<span className="font-semibold">Guests:</span> {venue.maxGuests}
+													</p>
+												</div>
+											</div>
+
+											{/* manager actions (optional now) */}
+											<div className="mt-4 flex gap-2">
+												<button
+													type="button"
+													className="flex-1 bg-neutral-900 px-3 py-2 text-sm text-white hover:bg-neutral-800"
+												>
+													View
+												</button>
+												<button
+													type="button"
+													className="px-3 py-2 text-sm bg-neutral-100 hover:bg-neutral-200"
+												>
+													Edit
+												</button>
+											</div>
 										</div>
 									</div>
 								))}
