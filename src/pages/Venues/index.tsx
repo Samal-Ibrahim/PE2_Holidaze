@@ -101,7 +101,7 @@ const Venues = () => {
 				<aside
 					className={`2xs:fixed lg:static flex lg:w-60 2xs:w-full  left-0 bottom-0 p-2 2xs:overflow-y-scroll lg:h-full lg:overflow-hidden justify-center hide-scrollbar lg:bg-gray-50 ${isFilterOpen ? "max-h-screen pt-10 bg-black/35 scroll-none" : "h-14 bg-black/15"}`}
 				>
-					<div className="lg:hidden 2xs:fixed flex justify-center w-full ">
+					<div className="lg:hidden 2xs:absolute flex justify-center w-full ">
 						<button
 							type="button"
 							onClick={() => {
