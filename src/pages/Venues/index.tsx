@@ -99,7 +99,7 @@ const Venues = () => {
 			/>
 			<div className="gap-4 grid lg:grid-cols-[auto_1fr] shadow-md h-full">
 				<aside
-					className={`2xs:fixed lg:static flex lg:w-60 2xs:w-full  left-0 bottom-0 p-2 2xs:overflow-y-scroll lg:h-full lg:overflow-hidden justify-center hide-scrollbar lg:bg-gray-50 ${isFilterOpen ? "max-h-screen bg-black/35 scroll-none" : "h-14 bg-black/15"}`}
+					className={`2xs:fixed lg:static flex lg:w-60 2xs:w-full  left-0 bottom-0 p-2 2xs:overflow-y-scroll lg:h-full lg:overflow-hidden justify-center hide-scrollbar lg:bg-gray-50 ${isFilterOpen ? "max-h-screen pt-10 bg-black/35 scroll-none" : "h-14 bg-black/15"}`}
 				>
 					<div className="lg:hidden 2xs:fixed flex justify-center w-full ">
 						<button
@@ -107,7 +107,7 @@ const Venues = () => {
 							onClick={() => {
 								setFilterOpen(!isFilterOpen)
 							}}
-							className={`bg-gray-50 shadow px-4 py-2 cursor-pointer active:bg-gray ${isFilterOpen ? "mt-2" : ""}`}
+							className={`bg-gray-50 shadow px-4 py-2 cursor-pointer active:bg-gray ${isFilterOpen ? "mt-6" : ""}`}
 						>
 							Filter
 						</button>
