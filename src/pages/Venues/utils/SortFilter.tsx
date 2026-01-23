@@ -17,12 +17,12 @@ const SortFilter = ({ sortOption, onSortChange }: Props) => {
 				value={sortOption}
 				name="option"
 				id="filter-by-type"
-				className="w-full border"
+				className="w-full border p-1"
 				onChange={(e) => {
 					handleChange(e.target.value)
 				}}
 			>
-				<option value="latest">Latest</option>
+				<option value="latest" className="p-2">Latest</option>
 				<option value="Oldest">Oldest</option>
 				<option value="cheapest">Cheapest</option>
 				<option value="expensive">Most expensive</option>
