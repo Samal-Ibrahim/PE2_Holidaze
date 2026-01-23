@@ -21,7 +21,6 @@ export default async function fetchVenues(): Promise<ApiResponse<Venues[]>> {
 			throw new Error("Failed to fetch venues")
 		}
 		const data: ApiResponse<RawVenues[]> = await response.json()
-		console.log(data.data)
 		return {
 			...data,
 			data: normalizeVenues(data.data),

@@ -24,7 +24,6 @@ export type RegisterPayload = {
 		url: string
 		alt: string
 	}
-	venueManager?: boolean
 }
 
 export type RegisterResponse = {

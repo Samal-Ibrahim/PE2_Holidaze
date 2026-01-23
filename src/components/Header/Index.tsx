@@ -1,5 +1,8 @@
+import { useQuery } from "@tanstack/react-query"
 import { Link, useNavigate } from "react-router-dom"
+import userProfile from "@/api/profiles/holidazeProfile"
 import {
+	CREATE_VENUE_PAGE_URL,
 	LOGIN_PAGE_URL,
 	PROFILE_PAGE_URL,
 	REGISTER_PAGE_URL,
@@ -8,8 +11,19 @@ import {
 
 import { useAuth } from "@/hooks/useAuth"
 export const Header = () => {
-	const { logout, user } = useAuth()
+	const { logout } = useAuth()
 	const navigate = useNavigate()
+
+	const { user } = useAuth()
+	const username = user?.name
+
+	const { data } = useQuery({
+		queryKey: ["profile", username],
+		queryFn: () => userProfile(username as string),
+		enabled: !!username,
+	})
+
+	const venueManager = !!data?.data?.venueManager
 
 	return (
 		<div className="flex flex-col justify-between mt-6 items-center">
@@ -28,6 +42,12 @@ export const Header = () => {
 					</Link>
 					<Link className={`nav-link ${!user ? "block" : "hidden"}`} to={REGISTER_PAGE_URL}>
 						Register
+					</Link>
+					<Link
+						className={`nav-link ${venueManager ? "block" : "hidden"}`}
+						to={CREATE_VENUE_PAGE_URL}
+					>
+						Create
 					</Link>
 
 					<button

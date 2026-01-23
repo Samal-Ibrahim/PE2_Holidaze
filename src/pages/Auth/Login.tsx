@@ -1,7 +1,8 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import userProfile from "@/api/profiles/holidazeProfile"
 import { useAuth } from "@/hooks/useAuth"
 import { isValidStudentEmail } from "@/lib/validators"
 import type { User } from "@/types"
@@ -11,11 +12,13 @@ const Login = () => {
 	const [errorMessage, setErrorMessage] = useState("")
 	const { setUser } = useAuth()
 
+	const queryClient = useQueryClient()
+
 	const { mutate, isPending } = useMutation({
 		mutationFn: ({ email, password }: { email: string; password: string }) =>
 			loginApi(email, password),
 
-		onSuccess: (data) => {
+		onSuccess: async (data) => {
 			if ("user" in data) {
 				toast.success("Login successful!")
 				const user: User = {
@@ -25,7 +28,14 @@ const Login = () => {
 					token: data.user.accessToken,
 				}
 				setUser(user)
-				navigate("/profile")
+
+				await queryClient.prefetchQuery({
+					queryKey: ["profile", user.name],
+					queryFn: () => userProfile(user.name),
+					
+					staleTime: 5 * 60 * 1000,
+				})
+				navigate("/")
 			} else {
 				setErrorMessage(data.errors.map((err) => err.message).join(", "))
 			}

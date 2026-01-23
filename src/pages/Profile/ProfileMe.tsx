@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { useState } from "react"
 import userProfile from "@/api/profiles/holidazeProfile"
-import { useMenuToggle } from "@/context/MenuToggleContext"
+import { useEditToggle } from "@/context/EditToggleContext"
 import { useAuth } from "@/hooks/useAuth"
 import type { Profile } from "@/types"
 import EditProfile from "./components/EditProfile"
@@ -13,12 +13,13 @@ const ProfileMe = () => {
 	const username = user?.name
 
 	const [isActiveTab, setActiveTab] = useState<Tab>("bookings")
-	const { isMenuOpen, setMenuOpen } = useMenuToggle()
+	const { isEditOpen, setEditOpen } = useEditToggle()
 
 	const { data, isLoading, isError, error } = useQuery({
-		queryKey: ["user", username],
+		queryKey: ["profile", username],
 		queryFn: () => userProfile(username as string),
 		enabled: !!username,
+		staleTime: 5 * 60 * 1000,
 	})
 
 	if (!username) return <p>Not logged in</p>
@@ -35,8 +36,6 @@ const ProfileMe = () => {
 			)
 		}
 	}
-
-	console.log(profileDetails)
 
 	const baseTabClass = "cursor-pointer p-4 font-semibold text-gray-700 transition hover:bg-gray-100"
 	const activeTabClass = "border-b-4 border-black/30 font-bold"
@@ -74,13 +73,13 @@ const ProfileMe = () => {
 						<button
 							type="button"
 							className="cursor-pointer bg-white hover:bg-gray-200 px-2 py-1 shadow-xl"
-							onClick={() => setMenuOpen(true)}
+							onClick={() => setEditOpen(true)}
 						>
 							Edit
 						</button>
 					</div>
 					<div
-						className={`fixed top-0 right-0 flex items-center justify-center h-full ${isMenuOpen ? "flex" : "hidden"} w-full bg-black/60`}
+						className={`fixed top-0 right-0 flex items-center justify-center h-full ${isEditOpen ? "flex" : "hidden"} w-full bg-black/60`}
 					>
 						<EditProfile data={profileDetails} />
 					</div>

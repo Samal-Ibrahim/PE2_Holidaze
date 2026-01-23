@@ -12,12 +12,12 @@ export type AuthProviderProps = {
 	children: ReactNode
 }
 
-// MenuToggle Context Types
-export type MenuToggleContextType = {
-	isMenuOpen: boolean
-	setMenuOpen: (value: boolean) => void
+// EditToggle Context Types
+export type EditToggleContextType = {
+	isEditOpen: boolean
+	setEditOpen: (value: boolean) => void
 }
 
-export type MenuToggleProviderProps = {
+export type EditToggleProviderProps = {
 	children: ReactNode
 }

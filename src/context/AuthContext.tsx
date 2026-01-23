@@ -10,9 +10,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		setStoredValue: setUser,
 		removeStoredValue: clearUser,
 	} = useLocalStorage<User | null>("user", null)
+
 	const logout = useCallback(() => {
 		clearUser()
 	}, [clearUser])
+
 	const value = useMemo(
 		() => ({
 			user,

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
 import fetchSingleVenue from "@/api/venues/fetchSingleVenue"
 
-const viewVenue = () => {
+const ViewSingleVenue = () => {
 	const { id } = useParams()
 
 	const { data, isLoading, isError, error } = useQuery({
@@ -167,4 +167,4 @@ const viewVenue = () => {
 		</div>
 	)
 }
-export default viewVenue
+export default ViewSingleVenue

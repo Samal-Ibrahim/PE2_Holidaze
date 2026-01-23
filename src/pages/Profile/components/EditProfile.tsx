@@ -2,16 +2,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import updateProfileApi from "@/api/profiles/updateProfileApi"
-import { useMenuToggle } from "@/context/MenuToggleContext"
+import { useEditToggle } from "@/context/EditToggleContext"
 import type { ApiResponse, Profile } from "@/types"
 
 const EditProfile = (profileDetails: ApiResponse<Profile>) => {
-	const { setMenuOpen } = useMenuToggle()
+	const { setEditOpen } = useEditToggle()
 	const queryClient = useQueryClient()
 	const profile = profileDetails.data
 	const username = profile.name
 
-	// ✅ GOOD - Controlled inputs with state
 	const [formData, setFormData] = useState({
 		avatarUrl: profile.avatar?.url || "",
 		bannerUrl: profile.banner.url || "",
@@ -22,8 +21,8 @@ const EditProfile = (profileDetails: ApiResponse<Profile>) => {
 	const mutation = useMutation({
 		mutationFn: updateProfileApi,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["user", username] })
-			setMenuOpen(false)
+			queryClient.invalidateQueries({ queryKey: ["profile", username] })
+			setEditOpen(false)
 			toast.success("Profile updated successfully!")
 		},
 		onError: () => {
@@ -54,7 +53,7 @@ const EditProfile = (profileDetails: ApiResponse<Profile>) => {
 					<h3 className="text-2xl font-bold">Edit Profile</h3>
 					<button
 						type="button"
-						onClick={() => setMenuOpen(false)}
+						onClick={() => setEditOpen(false)}
 						className="hover:bg-gray-100 px-2 py-1 cursor-pointer"
 					>
 						Close

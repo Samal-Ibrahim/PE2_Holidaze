@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 import {
 	CONTACT_PAGE_URL,
+	CREATE_VENUE_PAGE_URL,
 	LOGIN_PAGE_URL,
 	PROFILE_PAGE_URL,
 	REGISTER_PAGE_URL,
@@ -13,16 +14,18 @@ import NotFound from "@/pages/NotFound"
 import ProfileMe from "@/pages/Profile/ProfileMe"
 import ProfileUsers from "@/pages/Profile/ProfileUsers"
 import Venues from "@/pages/Venues"
-import ViewVenue from "@/pages/Venues/viewVenue"
+import CreateVenue from "@/pages/Venues/CreateVenue"
+import ViewSingleVenue from "@/pages/Venues/ViewSingleVenue"
 import IsLoggedIn from "@/routes/LoggedInRoute"
 import ProtectedRoute from "@/routes/ProtectedRoute"
+import VenueManagerRoute from "./VenueManagerRoute"
 
 export default function AppRoutes() {
 	return (
 		<Routes>
 			<Route path={CONTACT_PAGE_URL} element={<Contact />} />
 			<Route path={VENUES_PAGE_URL} element={<Venues />} />
-			<Route path={`${VENUES_PAGE_URL}venues/:id`} element={<ViewVenue />} />
+			<Route path={`${VENUES_PAGE_URL}venues/:id`} element={<ViewSingleVenue />} />
 			<Route element={<IsLoggedIn />}>
 				<Route path={LOGIN_PAGE_URL} element={<Login />} />
 				<Route path={REGISTER_PAGE_URL} element={<Register />} />
@@ -30,6 +33,10 @@ export default function AppRoutes() {
 			<Route element={<ProtectedRoute />}>
 				<Route path={PROFILE_PAGE_URL} element={<ProfileMe />} />
 				<Route path={`${PROFILE_PAGE_URL}/:username`} element={<ProfileUsers />} />
+				{/* if user isnt venue manager, they cant go in venue creating page */}
+				<Route element={<VenueManagerRoute />}>
+					<Route path={`${CREATE_VENUE_PAGE_URL}`} element={<CreateVenue />} />
+				</Route>
 			</Route>
 			<Route path="*" element={<NotFound />} />
 		</Routes>
