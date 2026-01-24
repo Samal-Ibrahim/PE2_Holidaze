@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query"
+import { useState } from "react"
 import { useParams } from "react-router-dom"
 import fetchSingleVenue from "@/api/venues/fetchSingleVenue"
 
 const ViewSingleVenue = () => {
 	const { id } = useParams()
+	const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ["venue", id],
@@ -25,12 +27,40 @@ const ViewSingleVenue = () => {
 				<div className="lg:col-span-2 space-y-6">
 					{/* Image Gallery */}
 					{venue.media && venue.media.length > 0 && (
-						<div className=" overflow-hidden">
-							<img
-								src={venue.media[0].url}
-								alt={venue.media[0].alt || venue.name}
-								className="w-full h-125 object-cover"
-							/>
+						<div className="relative">
+							<div className="overflow-hidden rounded-lg">
+								<img
+									src={venue.media[currentImageIndex].url}
+									alt={venue.media[currentImageIndex].alt || venue.name}
+									className="w-full h-96 object-cover"
+								/>
+							</div>
+							{venue.media.length > 1 && (
+								<>
+									<button
+										type="button"
+										onClick={() => {
+											setCurrentImageIndex((prev) =>
+												prev === 0 ? venue.media.length - 1 : prev - 1
+											)
+										}}
+										className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded shadow-lg"
+									>
+										←
+									</button>
+									<button
+										type="button"
+										onClick={() => {
+											setCurrentImageIndex((prev) =>
+												prev === venue.media.length - 1 ? 0 : prev + 1
+											)
+										}}
+										className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded shadow-lg"
+									>
+										→
+									</button>
+								</>
+							)}
 						</div>
 					)}
 

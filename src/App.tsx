@@ -6,7 +6,7 @@ import Footer from "./components/Footer/index"
 
 function App() {
 	return (
-		<div className="grid grid-rows-[auto_1fr_auto] mx-auto px-2 min-h-screen gap-4 container">
+		<div className="grid grid-rows-[auto_1fr_auto] sm:container mx-auto min-h-screen gap-4">
 			<div className="w-full">
 				<Header />
 			</div>

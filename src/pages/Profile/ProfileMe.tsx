@@ -41,7 +41,7 @@ const ProfileMe = () => {
 	const activeTabClass = "border-b-4 border-black/30 font-bold"
 
 	return (
-		<div className="bg-bg min-h-screen p-4 flex flex-col gap-2 shadow-lg">
+		<div className="bg-bg min-h-screen flex flex-col gap-2 shadow-lg">
 			<div className="flex">
 				<div className="relative w-full shadow-md p-4">
 					<div className="relative w-full h-90 overflow-hidden">

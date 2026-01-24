@@ -9,9 +9,13 @@ export const normalizeSingleVenue = (venue: RawVenues): Venue => {
 		name: (venue.name ?? "").trim() === "" ? "Unnamed Venue" : venue.name,
 		description:
 			(venue.description ?? "").trim() === "" ? "No description available" : venue.description,
-		media: (venue.media && venue.media.length > 0
-			? [venue.media[0]]
-			: [{ url: imgNA, alt: "Image not available" }]) as [{ url: string; alt: string }],
+		media: (venue.media && venue.media.length > 0 
+			? venue.media.map((m) => ({
+				url: m.url ?? imgNA,
+				alt: m.alt ?? "Venue Image",
+			}))
+			: [{ url: imgNA, alt: "Venue Image" }]
+		),
 		price: venue.price ?? 0,
 		maxGuests: venue.maxGuests ?? 1,
 		rating: venue.rating ?? 0,

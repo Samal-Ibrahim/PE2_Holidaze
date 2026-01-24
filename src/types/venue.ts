@@ -2,12 +2,10 @@ export type Venue = {
     	id: string
 	name: string
 	description: string
-	media: [
-		{
-			url: string
-			alt: string
-		},
-	]
+	media: {
+		url: string
+		alt: string
+	}[]
 	price: number
 	maxGuests: number
 	rating: number
@@ -41,8 +39,7 @@ export type Venue = {
 			alt: string
 		}
 	}
-	bookings:
-		{
+	bookings: {
 			id: string
 			dateFrom: string
 			dateTo: string
