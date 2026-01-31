@@ -12,6 +12,7 @@ export const VENUES_PAGE_URL = "/"
 export const VENUE_PAGE_URL = "/:id"
 export const CREATE_VENUE_PAGE_URL = "/create-venue"
 export const EDIT_VENUE_PAGE_URL = "/edit-venue/:id"
+
 export const BOOKING_PAGE_URL = "/booking"
 
 export const VENUES_ENDPOINT = `${HOLIDAZE_ENDPOINT}/venues`
@@ -23,3 +24,4 @@ export const REGISTER_API_URL = `${API_BASE}/auth/register`
 export const PROFILE_API_URL = `${HOLIDAZE_ENDPOINT}/profiles`
 
 export const PROFILE_UPDATE_API_URL = `${HOLIDAZE_ENDPOINT}/profiles`
+export const BOOKINGS_API_URL = `${HOLIDAZE_ENDPOINT}/bookings`

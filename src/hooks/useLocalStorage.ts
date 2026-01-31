@@ -1,24 +1,36 @@
 import { useState } from "react"
 
-export function useLocalStorage<T>(user: string, initialValue: T) {
+export function useLocalStorage<T>(key: string, initialValue: T) {
 	const [value, setValue] = useState<T>(() => {
 		try {
-			const stored = localStorage.getItem(user)
+			const stored = localStorage.getItem(key)
+			if (!stored) return initialValue
 
-			return stored ? JSON.parse(stored) : initialValue
-		} catch {
+			const parsed = JSON.parse(stored)
+			return parsed ?? initialValue
+		} catch (error) {
+			// Handle corrupted localStorage data gracefully - don't crash the app
+			console.warn(`Failed to parse localStorage key "${key}":`, error)
 			return initialValue
 		}
 	})
 
 	const setStoredValue = (newValue: T) => {
-		setValue(newValue)
-		localStorage.setItem(user, JSON.stringify(newValue))
+		try {
+			setValue(newValue)
+			localStorage.setItem(key, JSON.stringify(newValue))
+		} catch (error) {
+			console.error(`Failed to save to localStorage key "${key}":`, error)
+		}
 	}
 
 	const removeStoredValue = () => {
-		setValue(initialValue)
-		localStorage.removeItem(user)
+		try {
+			setValue(initialValue)
+			localStorage.removeItem(key)
+		} catch (error) {
+			console.error(`Failed to remove localStorage key "${key}":`, error)
+		}
 	}
 
 	return { value, setStoredValue, removeStoredValue }

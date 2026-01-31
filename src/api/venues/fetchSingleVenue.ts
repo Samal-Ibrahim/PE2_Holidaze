@@ -2,24 +2,26 @@ import { VENUES_ENDPOINT } from "@/config/constants"
 import type { ApiResponse } from "@/types"
 import type { Venue } from "@/types/venue"
 import type { RawVenues } from "@/types/venues"
+import { normalizeSingleVenue } from "@/utils/normalizeSingleVenue"
+import { ApiError, apiCall } from "../apiClient"
 
-import { normalizeSingleVenue } from "@/utils/normalizers/normalizeSingleVenue"
-
-export default async function fetchSingleVenue(id: string): Promise<ApiResponse<Venue>> {
+export async function fetchSingleVenue(id: string): Promise<ApiResponse<Venue>> {
 	try {
-		const response = await fetch(`${VENUES_ENDPOINT}/${id}?_owner=true&_bookings=true`, {
-			method: "GET",
-			headers: {
-				accept: "application/json",
-			},
-		})
-		const data: ApiResponse<RawVenues> = await response.json()
-		console.log("d", data.data)
+		const data = await apiCall<ApiResponse<RawVenues>>(
+			`${VENUES_ENDPOINT}/${id}?_owner=true&_bookings=true`,
+			{
+				method: "GET",
+			}
+		)
+
 		return {
 			...data,
 			data: normalizeSingleVenue(data.data),
 		}
 	} catch (error) {
-		throw new Error(error instanceof Error ? error.message : "An unknown error occurred")
+		if (error instanceof ApiError) {
+			throw new Error(`Failed to fetch venue: ${error.errors[0]?.message || "Unknown error"}`)
+		}
+		throw error
 	}
 }

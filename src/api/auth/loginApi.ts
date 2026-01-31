@@ -1,35 +1,35 @@
+import { LOGIN_API_URL } from "@/config/constants"
 import type { LoginFail, LoginOk } from "@/types"
-import { LOGIN_API_URL } from "../../config/constants"
+import { ApiError, apiCall } from "../apiClient"
 
-export default async function loginApi(
-	email: string,
-	password: string
-): Promise<LoginOk | LoginFail> {
-	const credential = {
-		email: email,
-		password: password,
-	}
+export async function login(email: string, password: string): Promise<LoginOk | LoginFail> {
 	try {
-		const response = await fetch(LOGIN_API_URL, {
+		const credential = {
+			email: email,
+			password: password,
+		}
+
+		const data = await apiCall<{
+			data: { id: string; name: string; email: string; accessToken: string }
+		}>(LOGIN_API_URL, {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(credential),
+			body: credential,
 		})
 
-		const raw = await response.json().catch(() => null)
-		if (!response.ok) {
+		return { ok: true, user: data.data }
+	} catch (error) {
+		if (error instanceof ApiError) {
 			return {
 				ok: false,
-				status: response.status,
-				errors: raw?.errors ?? [{ message: "Invalid email or password" }],
+				status: error.status,
+				errors: error.errors,
 			}
 		}
-		return { ok: true, user: raw.data }
-	} catch {
+
 		return {
 			ok: false,
 			status: 0,
-			errors: [{ message: "Network error. Try again." }],
+			errors: [{ message: "An unexpected error occurred during login" }],
 		}
 	}
 }

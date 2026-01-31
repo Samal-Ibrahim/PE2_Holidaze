@@ -1,32 +1,28 @@
 import { REGISTER_API_URL } from "@/config/constants"
 import type { RegisterFail, RegisterOk, RegisterPayload } from "@/types"
+import { ApiError, apiCall } from "../apiClient"
 
-export default async function registerApi(
-	payload: RegisterPayload
-): Promise<RegisterOk | RegisterFail> {
+export async function register(payload: RegisterPayload): Promise<RegisterOk | RegisterFail> {
 	try {
-		const response = await fetch(REGISTER_API_URL, {
+		const data = await apiCall<{ data: { name: string; email: string } }>(REGISTER_API_URL, {
 			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(payload),
+			body: payload,
 		})
 
-		const raw = await response.json().catch(() => null)
-
-		if (!response.ok) {
+		return { ok: true, user: data.data }
+	} catch (error) {
+		if (error instanceof ApiError) {
 			return {
 				ok: false,
-				status: response.status,
-				errors: raw?.errors ?? [{ message: "Registration failed" }],
+				status: error.status,
+				errors: error.errors,
 			}
 		}
 
-		return { ok: true, user: raw.data }
-	} catch {
 		return {
 			ok: false,
 			status: 0,
-			errors: [{ message: "Network error. Please try again." }],
+			errors: [{ message: "An unexpected error occurred during registration" }],
 		}
 	}
 }

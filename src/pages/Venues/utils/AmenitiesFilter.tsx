@@ -18,7 +18,7 @@ const AmenitiesFilter = ({ amenitiesFilter, setAmenitiesFilter }: Props) => {
 				<input
 					type="checkbox"
 					id="wifi"
-					 checked={amenitiesFilter.includes("wifi")}
+					checked={amenitiesFilter.includes("wifi")}
 					onChange={() => {
 						handleCheckboxChange("wifi")
 					}}
@@ -29,7 +29,7 @@ const AmenitiesFilter = ({ amenitiesFilter, setAmenitiesFilter }: Props) => {
 				<input
 					type="checkbox"
 					id="parking"
-					 checked={amenitiesFilter.includes("parking")}
+					checked={amenitiesFilter.includes("parking")}
 					onChange={() => {
 						handleCheckboxChange("parking")
 					}}
@@ -41,7 +41,7 @@ const AmenitiesFilter = ({ amenitiesFilter, setAmenitiesFilter }: Props) => {
 				<input
 					type="checkbox"
 					id="breakfast"
-					 checked={amenitiesFilter.includes("breakfast")}
+					checked={amenitiesFilter.includes("breakfast")}
 					onChange={() => {
 						handleCheckboxChange("breakfast")
 					}}
@@ -52,7 +52,7 @@ const AmenitiesFilter = ({ amenitiesFilter, setAmenitiesFilter }: Props) => {
 				<input
 					type="checkbox"
 					id="pets"
-					 checked={amenitiesFilter.includes("pets")}
+					checked={amenitiesFilter.includes("pets")}
 					onChange={() => {
 						handleCheckboxChange("pets")
 					}}

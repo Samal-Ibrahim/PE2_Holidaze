@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, useLocation } from "react-router-dom"
 import {
 	CONTACT_PAGE_URL,
 	CREATE_VENUE_PAGE_URL,
@@ -11,8 +11,9 @@ import Login from "@/pages/Auth/Login"
 import Register from "@/pages/Auth/Register"
 import Contact from "@/pages/Contact"
 import NotFound from "@/pages/NotFound"
-import ProfileMe from "@/pages/Profile/ProfileMe"
-import ProfileUsers from "@/pages/Profile/ProfileUsers"
+import EditProfile from "@/pages/Profile/components/EditProfile"
+import EditVenue from "@/pages/Profile/components/EditVenues"
+import Profile from "@/pages/Profile/Profile"
 import Venues from "@/pages/Venues"
 import CreateVenue from "@/pages/Venues/CreateVenue"
 import ViewSingleVenue from "@/pages/Venues/ViewSingleVenue"
@@ -21,24 +22,44 @@ import ProtectedRoute from "@/routes/ProtectedRoute"
 import VenueManagerRoute from "./VenueManagerRoute"
 
 export default function AppRoutes() {
+	const location = useLocation()
+	// Store the location where modal was opened so we can restore it when closing
+	const state = location.state as { backgroundLocation?: Location }
+
 	return (
-		<Routes>
-			<Route path={CONTACT_PAGE_URL} element={<Contact />} />
-			<Route path={VENUES_PAGE_URL} element={<Venues />} />
-			<Route path={`${VENUES_PAGE_URL}venues/:id`} element={<ViewSingleVenue />} />
-			<Route element={<IsLoggedIn />}>
-				<Route path={LOGIN_PAGE_URL} element={<Login />} />
-				<Route path={REGISTER_PAGE_URL} element={<Register />} />
-			</Route>
-			<Route element={<ProtectedRoute />}>
-				<Route path={PROFILE_PAGE_URL} element={<ProfileMe />} />
-				<Route path={`${PROFILE_PAGE_URL}/:username`} element={<ProfileUsers />} />
-				{/* if user isnt venue manager, they cant go in venue creating page */}
-				<Route element={<VenueManagerRoute />}>
-					<Route path={`${CREATE_VENUE_PAGE_URL}`} element={<CreateVenue />} />
+		<>
+			{/* Background routes */}
+			<Routes location={state?.backgroundLocation || location}>
+				<Route path={CONTACT_PAGE_URL} element={<Contact />} />
+				<Route path={VENUES_PAGE_URL} element={<Venues />} />
+				<Route path={`${VENUES_PAGE_URL}venues/:id`} element={<ViewSingleVenue />} />
+
+				<Route element={<IsLoggedIn />}>
+					<Route path={LOGIN_PAGE_URL} element={<Login />} />
+					<Route path={REGISTER_PAGE_URL} element={<Register />} />
 				</Route>
-			</Route>
-			<Route path="*" element={<NotFound />} />
-		</Routes>
+
+				<Route element={<ProtectedRoute />}>
+					<Route path={PROFILE_PAGE_URL} element={<Profile />} />
+
+					<Route path={`${PROFILE_PAGE_URL}/edit-profile`} element={<EditProfile />} />
+					<Route path={`${PROFILE_PAGE_URL}/edit-venue/:id`} element={<EditVenue />} />
+
+					<Route element={<VenueManagerRoute />}>
+						<Route path={CREATE_VENUE_PAGE_URL} element={<CreateVenue />} />
+					</Route>
+				</Route>
+
+				<Route path="*" element={<NotFound />} />
+			</Routes>
+
+			{/* Modal overlay routes */}
+			{state?.backgroundLocation && (
+				<Routes>
+					<Route path={`${PROFILE_PAGE_URL}/edit-profile`} element={<EditProfile />} />
+					<Route path={`${PROFILE_PAGE_URL}/edit-venue/:id`} element={<EditVenue />} />
+				</Routes>
+			)}
+		</>
 	)
 }

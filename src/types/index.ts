@@ -18,4 +18,4 @@ export type {
 } from "./context"
 
 export type { ProfileUpdatePayload } from "./profile"
-export type { Media, Profile, User } from "./user"
+export type { Media, ProfileProps, User } from "./user"

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { Navigate, Outlet, useLocation } from "react-router-dom"
-import userProfile from "@/api/profiles/holidazeProfile"
+import { fetchProfile } from "@/api/profiles/holidazeProfileApi"
 import { useAuth } from "@/hooks/useAuth"
 
 const VenueManagerRoute = () => {
@@ -11,7 +11,7 @@ const VenueManagerRoute = () => {
 
 	const { data } = useQuery({
 		queryKey: ["profile", username],
-		queryFn: () => userProfile(username as string),
+		queryFn: () => fetchProfile(username as string),
 		enabled: !!username,
 	})
 

@@ -22,7 +22,9 @@ const SortFilter = ({ sortOption, onSortChange }: Props) => {
 					handleChange(e.target.value)
 				}}
 			>
-				<option value="latest" className="p-2">Latest</option>
+				<option value="latest" className="p-2">
+					Latest
+				</option>
 				<option value="Oldest">Oldest</option>
 				<option value="cheapest">Cheapest</option>
 				<option value="expensive">Most expensive</option>

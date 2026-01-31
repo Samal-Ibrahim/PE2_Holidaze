@@ -11,6 +11,7 @@
 	--color-btn-text-hover: var(--color-btn-text-hover, #333333);
 
 	--breakpoint-2xs: 320px;
+	--breakpoint-xs: 480px;
 	--breakpoint-sm: 640px;
 	--breakpoint-md: 768px;
 	--breakpoint-lg: 1024px;

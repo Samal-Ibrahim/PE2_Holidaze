@@ -10,8 +10,10 @@ import { EditToggleProvider } from "./context/EditToggleContext"
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
-			staleTime: 1000 * 60 * 5, // 5 minutes
-			gcTime: 1000 * 60 * 10, // 10 minutes
+			// Data stays fresh for 5 min before refetching
+			staleTime: 1000 * 60 * 5,
+			// Keep data in cache for 10 min before garbage collecting
+			gcTime: 1000 * 60 * 10,
 			retry: 1,
 			refetchOnWindowFocus: false,
 		},

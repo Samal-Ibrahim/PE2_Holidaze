@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import userProfile from "@/api/profiles/holidazeProfile"
+import { fetchProfile } from "@/api/profiles/holidazeProfileApi"
 import { useAuth } from "@/hooks/useAuth"
 import { isValidStudentEmail } from "@/lib/validators"
 import type { User } from "@/types"
-import loginApi from "../../api/auth/loginApi"
+import { login } from "../../api/auth/loginApi"
 
 const Login = () => {
 	const [errorMessage, setErrorMessage] = useState("")
@@ -16,7 +16,7 @@ const Login = () => {
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: ({ email, password }: { email: string; password: string }) =>
-			loginApi(email, password),
+			login(email, password),
 
 		onSuccess: async (data) => {
 			if ("user" in data) {
@@ -31,8 +31,8 @@ const Login = () => {
 
 				await queryClient.prefetchQuery({
 					queryKey: ["profile", user.name],
-					queryFn: () => userProfile(user.name),
-					
+					queryFn: () => fetchProfile(user.name),
+
 					staleTime: 5 * 60 * 1000,
 				})
 				navigate("/")
@@ -60,8 +60,8 @@ const Login = () => {
 	}
 
 	return (
-		<div className=" h-full flex items-center justify-center p-4">
-			<div className="flex flex-col gap-6 items-center justify-center">
+		<div className="flex items-center justify-center p-2 h-full">
+			<div className="flex flex-col gap-6 items-center justify-center bg-white p-4 shadow">
 				<h3>Login Page</h3>
 				<form
 					aria-label="login form"
@@ -69,21 +69,20 @@ const Login = () => {
 						e.preventDefault()
 						handleLogin(e)
 					}}
-					className=" flex flex-col gap-4 max-w-lg min-w-md p-4"
+					className="flex flex-col gap-4 xs:w-120 xs:p-6 2xs:w-[20rem]"
 				>
-					<div className="flex flex-col w-full">
-						<p className="text-red-600">{errorMessage}</p>
+					{errorMessage && <p className="text-red-600">{errorMessage}</p>}
 
+					<div className="flex flex-col w-full">
 						<label htmlFor="email">Email:</label>
 						<input
 							aria-label="email-input"
 							type="email"
-							className=" bg-content-bg text-fg p-2 w-full"
+							className=" text-fg p-2 w-full bg-gray-100"
 							placeholder="Enter your email"
 							required
 							id="email"
-							name="email"
-							defaultValue={"samibr02737@stud.noroff.no"}
+							name="email" // Test account for development							defaultValue={"samibr02737@stud.noroff.no"}
 						/>
 					</div>
 					<div className="flex flex-col w-full">
@@ -91,7 +90,7 @@ const Login = () => {
 						<input
 							aria-label="password-input"
 							type="password"
-							className=" bg-content-bg text-fg p-2 w-full"
+							className=" text-fg p-2 w-full bg-gray-100"
 							placeholder="Enter your password"
 							id="password"
 							name="password"
@@ -107,7 +106,7 @@ const Login = () => {
 					</div>
 					<button
 						type="submit"
-						className="bg-btn w-full hover:bg-btn-bg-hover hover:text-btn-text-hover cursor-pointer text-btn-text p-2 mt-4"
+						className="w-full mt-4 p-2 text-btn-text bg-btn transition-colors cursor-pointer hover:bg-btn-bg-hover hover:text-btn-text-hover"
 					>
 						{isPending ? "Logging in..." : "Login"}
 					</button>

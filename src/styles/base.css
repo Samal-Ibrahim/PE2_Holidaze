@@ -112,13 +112,12 @@ h6 {
 }
 
 .hide-scrollbar {
-  -ms-overflow-style: none;     
-  scrollbar-width: none;        
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;               
+	display: none;
 }
-
 
 .nav-link {
 	text-decoration: none;

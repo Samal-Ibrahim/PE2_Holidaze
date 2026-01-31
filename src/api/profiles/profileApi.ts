@@ -1,19 +1,21 @@
 import { PROFILE_API_URL } from "@/config/constants"
-import { ApiError } from "@/lib/errors"
-import type { ApiResponse, Profile } from "@/types"
+import type { ApiResponse, ProfileProps } from "@/types"
+import { ApiError, apiCall } from "../apiClient"
 
-export default async function profile_api(username: string): Promise<ApiResponse<Profile>> {
-	const response = await fetch(`${PROFILE_API_URL}/${username}?=_count`, {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-		},
-	})
+export async function fetchProfileByUsername(username: string): Promise<ApiResponse<ProfileProps>> {
+	try {
+		const data = await apiCall<ApiResponse<ProfileProps>>(
+			`${PROFILE_API_URL}/${username}?=_count`,
+			{
+				method: "GET",
+			}
+		)
 
-	if (!response.ok) {
-		throw new ApiError("Failed to fetch profile data")
+		return data
+	} catch (error) {
+		if (error instanceof ApiError) {
+			throw new Error(`Failed to fetch profile: ${error.errors[0]?.message || "Unknown error"}`)
+		}
+		throw error
 	}
-
-	const data = await response.json()
-	return data
 }

@@ -1,24 +1,107 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import fetchSingleVenue from "@/api/venues/fetchSingleVenue"
+import { toast } from "react-toastify"
+import { createReservation } from "@/api/bookings"
+import { fetchSingleVenue } from "@/api/venues/fetchSingleVenue"
+import { useAuth } from "@/hooks/useAuth"
 
 const ViewSingleVenue = () => {
 	const { id } = useParams()
 	const [currentImageIndex, setCurrentImageIndex] = useState(0)
+	// Using different naming pattern for consistency (inconsistent intentionally)
+	const { user: loggedInUser } = useAuth()
+	const username = loggedInUser?.name
+	// Helper variable that might be used later
+	const isUserLoggedIn = !!loggedInUser
 
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ["venue", id],
 		queryFn: () => fetchSingleVenue(id || ""),
 		enabled: !!id,
+		staleTime: 5 * 60 * 1000,
+		gcTime: 10 * 60 * 1000,
 	})
 
-	if (isLoading) return <p>Loading...</p>
-	if (isError) return <p>Error: {(error as Error).message}</p>
+	const toZulu = (date: string) => {
+		if (!date) throw new Error("Please select both dates.")
+		// Convert date string to ISO 8601 format with Z (UTC) timezone for API
+		return new Date(`${date}T00:00:00.000Z`).toISOString()
+	}
+	const qc = useQueryClient()
+	const reservationData = () => {
+		// Query DOM directly for form inputs - necessary because they're not controlled components
+		const dateFromRaw = (document.querySelector('input[name="checkin"]') as HTMLInputElement)?.value
+
+		const dateToRaw = (document.querySelector('input[name="checkout"]') as HTMLInputElement)?.value
+
+		const guests =
+			parseInt((document.querySelector('input[name="guests"]') as HTMLInputElement)?.value, 10) || 1
+
+		return {
+			dateFrom: toZulu(dateFromRaw),
+			dateTo: toZulu(dateToRaw),
+			guests,
+		}
+	}
+
+	const mutation = useMutation({
+		mutationFn: (bookingData: {
+			venueId: string
+			dateFrom: string
+			dateTo: string
+			guests: number
+		}) =>
+			createReservation(
+				bookingData.venueId,
+				bookingData.dateFrom,
+				bookingData.dateTo,
+				bookingData.guests
+			),
+
+		onSuccess: () => {
+			toast.success("Reservation created successfully!")
+			qc.invalidateQueries({ queryKey: ["profile", username] })
+		},
+		onError: (err: unknown) =>
+			toast.error(err instanceof Error ? err.message : "Failed to create reservation"),
+	})
+	if (isLoading) return <p>Loading venue details...</p>
+	if (isError) return <p>Error loading venue: {(error as Error).message}</p>
 
 	const venue = data?.data
 
 	if (!venue || Array.isArray(venue)) return <p>Venue not found</p>
+
+	const reserveBooking = () => {
+		if (isUserLoggedIn) {
+			return (
+				<>
+					<button
+						type="button"
+						onClick={() => {
+							try {
+								const { dateFrom, dateTo, guests } = reservationData()
+								mutation.mutate({ venueId: id || "", dateFrom, dateTo, guests })
+							} catch (e) {
+								toast.error((e as Error).message)
+							}
+						}}
+						className="w-full py-3 font-semibold text-btn-text transition-colors bg-btn hover:bg-btn-bg-hover cursor-pointer"
+					>
+						{mutation.isPending ? "Reserving..." : "Reserve"}
+					</button>
+					<p>{mutation.isError ? "Failed to create reservation." : ""}</p>
+				</>
+			)
+		} else {
+			return (
+				<p className="text-center text-sm text-gray-500 mt-4">
+					Please log in to make a reservation.
+				</p>
+			)
+		}
+	}
 
 	return (
 		<div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -28,7 +111,7 @@ const ViewSingleVenue = () => {
 					{/* Image Gallery */}
 					{venue.media && venue.media.length > 0 && (
 						<div className="relative">
-							<div className="overflow-hidden rounded-lg">
+							<div className="overflow-hidden">
 								<img
 									src={venue.media[currentImageIndex].url}
 									alt={venue.media[currentImageIndex].alt || venue.name}
@@ -44,7 +127,7 @@ const ViewSingleVenue = () => {
 												prev === 0 ? venue.media.length - 1 : prev - 1
 											)
 										}}
-										className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded shadow-lg"
+										className="absolute left-4 top-1/2 p-2 -translate-y-1/2 bg-white/80 shadow-lg hover:bg-white"
 									>
 										←
 									</button>
@@ -55,7 +138,7 @@ const ViewSingleVenue = () => {
 												prev === venue.media.length - 1 ? 0 : prev + 1
 											)
 										}}
-										className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded shadow-lg"
+										className="absolute right-4 top-1/2 p-2 -translate-y-1/2 bg-white/80 shadow-lg hover:bg-white"
 									>
 										→
 									</button>
@@ -165,7 +248,7 @@ const ViewSingleVenue = () => {
 									type="date"
 									name="checkout"
 									min={new Date().toISOString().split("T")[0]}
-									className="w-full px-4 py-3 border  focus:outline-none focus:ring-2 focus:ring-gray-500"
+									className="w-full px-4 py-3 border focus:outline-none focus:ring-2 focus:ring-gray-500"
 								/>
 							</div>
 							<div>
@@ -182,14 +265,7 @@ const ViewSingleVenue = () => {
 								/>
 							</div>
 						</div>
-
-						<button
-							type="button"
-							className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 transition-colors"
-						>
-							Reserve
-						</button>
-
+						{reserveBooking()}
 						<p className="text-center text-sm text-gray-500 mt-4">You won't be charged yet</p>
 					</div>
 				</div>

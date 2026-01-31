@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
-import registerApi from "@/api/auth/registerApi"
+import { register } from "@/api/auth/registerApi"
 import { isValidStudentEmail } from "@/lib/validators"
 
 const Register = () => {
@@ -10,7 +10,7 @@ const Register = () => {
 	const navigate = useNavigate()
 
 	const { mutate, isPending } = useMutation({
-		mutationFn: registerApi,
+		mutationFn: register,
 		onSuccess: (data) => {
 			if ("user" in data) {
 				toast.success("Registration successful! Please login.")
@@ -32,7 +32,6 @@ const Register = () => {
 		const email = formData.get("email") as string
 		const password = formData.get("password") as string
 		const bio = formData.get("bio") as string
-		const venueManager = formData.get("venueManager") === "on"
 
 		if (!isValidStudentEmail(email)) {
 			setErrorMessage("Email must end with @stud.noroff.no!")
@@ -49,18 +48,17 @@ const Register = () => {
 			email: email.trim(),
 			password,
 			bio: bio || undefined,
-			venueManager,
 		})
 	}
 
 	return (
-		<div className="h-full flex items-center justify-center p-4">
-			<div className="flex flex-col gap-6 items-center justify-center">
+		<div className="flex items-center justify-center p-2 h-full">
+			<div className="flex flex-col gap-6 items-center justify-center bg-white p-4 shadow">
 				<h3>Register Page</h3>
 				<form
 					aria-label="register form"
 					onSubmit={handleRegister}
-					className="flex flex-col gap-4 max-w-lg min-w-md p-4"
+					className="flex flex-col gap-4 xs:w-120 xs:p-6 2xs:w-[20rem]"
 				>
 					{errorMessage && <p className="text-red-600">{errorMessage}</p>}
 
@@ -68,7 +66,7 @@ const Register = () => {
 						<label htmlFor="name">Name:</label>
 						<input
 							type="text"
-							className="bg-content-bg text-fg p-2 w-full"
+							className=" text-fg p-2 w-full bg-gray-100"
 							placeholder="Enter your name"
 							required
 							id="name"
@@ -80,7 +78,7 @@ const Register = () => {
 						<label htmlFor="email">Email:</label>
 						<input
 							type="email"
-							className="bg-content-bg text-fg p-2 w-full"
+							className=" text-fg p-2 w-full bg-gray-100"
 							placeholder="Enter your email"
 							required
 							id="email"
@@ -92,7 +90,7 @@ const Register = () => {
 						<label htmlFor="password">Password:</label>
 						<input
 							type="password"
-							className="bg-content-bg text-fg p-2 w-full"
+							className=" text-fg p-2 w-full bg-gray-100"
 							placeholder="Enter your password"
 							id="password"
 							name="password"
@@ -104,17 +102,12 @@ const Register = () => {
 					<div className="flex flex-col w-full">
 						<label htmlFor="bio">Bio (optional):</label>
 						<textarea
-							className="bg-content-bg text-fg p-2 w-full"
+							className=" text-fg p-2 w-full bg-gray-100"
 							placeholder="Tell us about yourself"
 							id="bio"
 							name="bio"
 							rows={3}
 						/>
-					</div>
-
-					<div className="flex gap-2 items-center">
-						<input type="checkbox" id="venueManager" name="venueManager" className="w-4 h-4" />
-						<label htmlFor="venueManager">Register as Venue Manager</label>
 					</div>
 
 					<div className="flex gap-1 items-center">
@@ -127,7 +120,7 @@ const Register = () => {
 					<button
 						type="submit"
 						disabled={isPending}
-						className="bg-btn w-full hover:bg-btn-bg-hover hover:text-btn-text-hover cursor-pointer text-btn-text p-2 mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+						className="w-full mt-4 p-2 text-btn-text bg-btn transition-colors cursor-pointer hover:bg-btn-bg-hover hover:text-btn-text-hover disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						{isPending ? "Registering..." : "Register"}
 					</button>

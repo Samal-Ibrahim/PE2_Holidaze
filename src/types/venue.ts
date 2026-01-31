@@ -1,5 +1,5 @@
 export type Venue = {
-    	id: string
+	id: string
 	name: string
 	description: string
 	media: {
@@ -40,27 +40,27 @@ export type Venue = {
 		}
 	}
 	bookings: {
-			id: string
-			dateFrom: string
-			dateTo: string
-			guests: number
-			created: string
-			updated: string
-			customer: {
-				name: string
-				email: string
-				bio: string
-				avatar: {
-					url: string
-					alt: string
-				}
-				banner: {
-					url: string
-					alt: string
-				}
+		id: string
+		dateFrom: string
+		dateTo: string
+		guests: number
+		created: string
+		updated: string
+		customer: {
+			name: string
+			email: string
+			bio: string
+			avatar: {
+				url: string
+				alt: string
 			}
-		}[],
-	
+			banner: {
+				url: string
+				alt: string
+			}
+		}
+	}[]
+
 	_count: {
 		bookings: number
 	}

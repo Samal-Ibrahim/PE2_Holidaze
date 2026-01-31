@@ -8,6 +8,7 @@ export const normalizeVenues = (venues: RawVenues[]): Venues[] => {
 			name: (venue.name ?? "").trim() === "" ? "Unnamed Venue" : venue.name,
 			description:
 				(venue.description ?? "").trim() === "" ? "No description available" : venue.description,
+			// Only include first image for list view to reduce payload
 			media: (venue.media && venue.media.length > 0
 				? [venue.media[0]]
 				: [{ url: imgNA, alt: "Image not available" }]) as [{ url: string; alt: string }],

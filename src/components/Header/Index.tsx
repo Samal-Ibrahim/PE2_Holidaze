@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { Link, useNavigate } from "react-router-dom"
-import userProfile from "@/api/profiles/holidazeProfile"
+import { fetchProfile } from "@/api/profiles/holidazeProfileApi"
 import {
 	CREATE_VENUE_PAGE_URL,
 	LOGIN_PAGE_URL,
@@ -19,7 +19,7 @@ export const Header = () => {
 
 	const { data } = useQuery({
 		queryKey: ["profile", username],
-		queryFn: () => userProfile(username as string),
+		queryFn: () => fetchProfile(username as string),
 		enabled: !!username,
 	})
 

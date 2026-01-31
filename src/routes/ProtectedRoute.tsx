@@ -6,8 +6,6 @@ const ProtectedRoute = () => {
 	const isLoggedIn = Boolean(user)
 	const location = useLocation()
 
-	
-
 	if (!isLoggedIn) {
 		return <Navigate to="/login" state={{ from: location }} replace />
 	}

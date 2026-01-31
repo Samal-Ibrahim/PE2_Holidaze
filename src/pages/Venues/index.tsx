@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react"
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa"
 import { FaPerson } from "react-icons/fa6"
 import { Link } from "react-router-dom"
-import fetchVenues from "@/api/venues/fetchVenues"
+import { fetchVenues } from "@/api/venues/fetchVenues"
 import Input from "@/components/Inputs/Input"
 import StarRating from "@/components/RatingStars"
 import CardsSkeleton from "@/components/Skeleton/CardsSkeleton"
@@ -25,21 +25,26 @@ const Venues = () => {
 	const [sortOption, setSortOption] = useState<string>("latest")
 	const [isFilterOpen, setFilterOpen] = useState<boolean>(false)
 
+	// Manage body scroll - fixed memory leak
 	useEffect(() => {
+		// Only set overflow when filter is open
 		if (isFilterOpen) {
 			document.body.style.overflow = "hidden"
-		} else {
-			document.body.style.overflow = ""
 		}
 
+		// Always clean up on unmount or when closing filter
 		return () => {
-			document.body.style.overflow = ""
+			if (isFilterOpen) {
+				document.body.style.overflow = ""
+			}
 		}
 	}, [isFilterOpen])
 
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ["venues", currentPage],
 		queryFn: () => fetchVenues(currentPage),
+		staleTime: 5 * 60 * 1000, // Keep data fresh for 5 minutes
+		gcTime: 10 * 60 * 1000,
 	})
 
 	const venues = data?.data ?? []
@@ -86,8 +91,25 @@ const Venues = () => {
 		}
 	}, [filteredVenues, sortOption])
 
-	if (isLoading) return <CardsSkeleton />
-	if (isError) return <p>Error: {(error as Error).message}</p>
+	// Show loading skeleton only on initial load
+	if (isLoading && sortedVenues.length === 0) return <CardsSkeleton />
+
+	// Show error message
+	if (isError) {
+		return (
+			<section className="flex flex-col gap-4 items-center justify-center p-4">
+				<p className="text-red-600 font-semibold">Error loading venues</p>
+				<p className="text-gray-600">{(error as Error).message}</p>
+				<button
+					type="button"
+					onClick={() => window.location.reload()}
+					className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+				>
+					Reload Page
+				</button>
+			</section>
+		)
+	}
 
 	return (
 		<section className="flex flex-col gap-4 h-full">

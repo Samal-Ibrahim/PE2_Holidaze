@@ -14,7 +14,7 @@ export type Media = {
 	alt: string
 }
 
-export type Profile = {
+export type ProfileProps = {
 	name: string
 	email: string
 	avatar: Media
