@@ -110,7 +110,7 @@ const Profile = () => {
 						{profileDetails.bookings?.length === 0 ? (
 							<p>No bookings found.</p>
 						) : (
-							<div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+							<div className=" grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 								{profileDetails.bookings?.map((booking) => (
 									<div
 										key={booking.id}
@@ -161,7 +161,7 @@ const Profile = () => {
 						{profileDetails.venues?.length === 0 ? (
 							<p>No venues found.</p>
 						) : (
-							<div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+							<div className=" grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 								{profileDetails.venues?.map((venue) => (
 									<div
 										key={venue.id}
@@ -202,6 +202,7 @@ const Profile = () => {
 
 											<Link
 												to={`${PROFILE_PAGE_URL}/edit-venue/${venue.id}`}
+												state={{ backgroundLocation: location }}
 												className="px-3 py-2 text-sm bg-neutral-100 hover:bg-neutral-200 cursor-pointer"
 											>
 												Edit

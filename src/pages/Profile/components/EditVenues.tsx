@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useEffect, useState } from "react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { editVenueApi } from "@/api/venues/editVenueApi"
@@ -46,19 +47,29 @@ const EditVenues = () => {
 		gcTime: 10 * 60 * 1000,
 	})
 
+	const [mediaItems, setMediaItems] = useState<{ url: string; alt: string }[]>([])
+
+	useEffect(() => {
+		if (data?.data?.media) {
+			setMediaItems(data.data.media.map((m) => ({ url: m.url, alt: m.alt })))
+		}
+	}, [data])
+
+	const qc = useQueryClient()
+
 	const mutation = useMutation({
 		mutationFn: ({ id, data }: { id: string; data: EditVenueRequestProps }) =>
 			editVenueApi(id, data),
 		onSuccess: () => {
 			toast.success("Venue updated successfully!")
+			qc.invalidateQueries({ queryKey: ["venue"] })
+			qc.invalidateQueries({ queryKey: ["profile"] })
 			close()
 		},
 		onError: () => {
 			toast.error("Failed to update venue.")
 		},
 	})
-
-	// const qc = useQueryClient()
 
 	const state = location.state as { backgroundLocation?: Location }
 	const close = () => {
@@ -72,6 +83,15 @@ const EditVenues = () => {
 	const venue = data?.data
 
 	if (!venue || Array.isArray(venue)) return <p>Venue not found</p>
+
+	const handleRemoveImage = (indexToRemove: number) => {
+		const updatedItems = mediaItems.filter((_mediaItem, itemIndex) => itemIndex !== indexToRemove)
+		setMediaItems(updatedItems)
+	}
+
+	const handleAddImage = () => {
+		setMediaItems([...mediaItems, { url: "", alt: "" }])
+	}
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -87,12 +107,10 @@ const EditVenues = () => {
 		// Convert checkbox 'on' value to boolean
 		const getBool = (key: string) => fd.get(key) === "on"
 
-		const mediaUrl = getStr("mediaUrl")
-
 		const payload = {
 			name: getStr("name"),
 			description: getStr("description"),
-			media: mediaUrl ? [{ url: mediaUrl, alt: "" }] : [],
+			media: mediaItems.filter((m) => m.url.trim() !== ""),
 
 			price: getNum("price"),
 			maxGuests: getNum("maxGuests"),
@@ -120,7 +138,7 @@ const EditVenues = () => {
 	}
 
 	return (
-		<div className="relative w-full h-full flex justify-center items-center">
+		<div className="fixed bg-black/20 z-50 top-0 right-0 bottom-0 left-0 flex items-center justify-center h-full">
 			<div className="w-3xl bg-white p-4 max-h-[90vh] overflow-y-auto">
 				<div className="flex justify-between items-center mb-4">
 					<h3 className="text-2xl font-bold">Edit Venue</h3>
@@ -154,15 +172,52 @@ const EditVenues = () => {
 						defaultValue={venue.description}
 					/>
 
-					<label htmlFor="mediaUrl">Image URL</label>
-					<input
-						type="url"
-						className="bg-gray-100/50 border border-black/10 p-2"
-						placeholder="https://example.com/image.jpg"
-						id="mediaUrl"
-						name="mediaUrl"
-						defaultValue={venue.media[0]?.url}
-					/>
+					<label htmlFor="media">Images</label>
+					<div className="space-y-3">
+						{mediaItems.map((item, index) => (
+							<div key={`media-${item.url}-${index}`} className="flex flex-col gap-2">
+								<div className="flex gap-2">
+									<input
+										type="url"
+										className="flex-1 bg-gray-100/50 border border-black/10 p-2"
+										placeholder="https://example.com/image.jpg"
+										value={item.url}
+										onChange={(e) => {
+											const updated = [...mediaItems]
+											updated[index].url = e.target.value
+											setMediaItems(updated)
+										}}
+									/>
+									<button
+										type="button"
+										onClick={() => handleRemoveImage(index)}
+										className="px-3 py-2 text-red-600 font-semibold cursor-pointer transition-colors"
+									>
+										Remove
+									</button>
+								</div>
+								{item.url && (
+									<div className="flex flex-col gap-2 p-2 bg-gray-50 border border-gray-200">
+										{item.url.startsWith("http") && (
+											<img
+												src={item.url}
+												alt={`Preview ${index + 1}`}
+												className="w-64 h-64 object-cover"
+											/>
+										)}
+										<p className="text-xs text-gray-600 break-all">{item.url}</p>
+									</div>
+								)}
+							</div>
+						))}
+					</div>
+					<button
+						type="button"
+						onClick={handleAddImage}
+						className="mt-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold cursor-pointer transition-colors"
+					>
+						Add Image
+					</button>
 
 					<label htmlFor="price">Price per Night</label>
 					<input
@@ -284,7 +339,7 @@ const EditVenues = () => {
 					/>
 
 					<div className="flex gap-2 mt-4">
-						<button className="btn btn-danger" type="submit">
+						<button className="btn btn-danger w-full" type="submit">
 							{mutation.isPending ? "Saving..." : "Save Changes"}
 						</button>
 					</div>

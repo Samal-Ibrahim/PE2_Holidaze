@@ -81,7 +81,7 @@ const EditProfile = () => {
 	}
 
 	return (
-		<div className="fixed top-0 right-0 bottom-0 left-0 flex items-center justify-center h-full">
+		<div className="fixed bg-black/20 z-50 top-0 right-0 bottom-0 left-0 flex items-center justify-center h-full">
 			<div className="relative w-full h-full flex justify-center items-center">
 				<div className="w-3xl bg-white p-4">
 					<div className="flex justify-between items-center mb-4">
