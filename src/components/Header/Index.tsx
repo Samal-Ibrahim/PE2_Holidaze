@@ -18,13 +18,15 @@ export const Header = () => {
 	const { user } = useAuth()
 	const username = user?.name
 
-	const { data } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryKey: ["profile", username],
 		queryFn: () => fetchProfile(username as string),
 		enabled: !!username,
 	})
 
 	const venueManager = !!data?.data?.venueManager
+	// Show create button only if we have confirmed venue manager status or still loading
+	const showCreate = isLoading || venueManager
 
 	return (
 		<div className="flex flex-col justify-between mt-6 items-center">
@@ -57,7 +59,7 @@ export const Header = () => {
 						Register
 					</Link>
 					<Link
-						className={`nav-link ${venueManager ? "block" : "hidden"} ${location.pathname === CREATE_VENUE_PAGE_URL ? "bg-black! text-white!" : ""}`}
+						className={`nav-link ${showCreate ? "block" : "hidden"} ${location.pathname === CREATE_VENUE_PAGE_URL ? "bg-black! text-white!" : ""}`}
 						to={CREATE_VENUE_PAGE_URL}
 					>
 						Create

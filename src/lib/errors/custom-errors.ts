@@ -11,10 +11,3 @@ export class ValidationError extends Error {
 		this.name = "ValidationError"
 	}
 }
-
-export class ApiError extends Error {
-	constructor(message = "API request failed") {
-		super(message)
-		this.name = "ApiError"
-	}
-}

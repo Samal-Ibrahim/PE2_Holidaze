@@ -34,7 +34,7 @@ export const RegisterSchema = z.object({
 
 export const LoginResponseSchema = z.object({
 	data: z.object({
-		id: z.string(),
+		id: z.string().optional(),
 		name: z.string(),
 		email: z.string().regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email format"),
 		accessToken: z.string(),

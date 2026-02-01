@@ -1,52 +1,6 @@
 import { VENUES_ENDPOINT } from "@/config/constants"
+import type { EditVenueRequest, EditVenueResponse } from "@/types/venue"
 import { ApiError, apiCall, getStoredToken } from "../apiClient"
-
-interface MediaItem {
-	url: string
-	alt: string
-}
-
-interface VenueMeta {
-	wifi: boolean
-	parking: boolean
-	breakfast: boolean
-	pets: boolean
-}
-
-interface VenueLocation {
-	address: string
-	city: string
-	zip: string
-	country: string
-	continent: string
-	lat: number
-	lng: number
-}
-
-interface EditVenueRequest {
-	name: string
-	description: string
-	media: MediaItem[]
-	price: number
-	maxGuests: number
-	rating: number
-	meta: VenueMeta
-	location: VenueLocation
-}
-
-interface EditVenueResponse {
-	id: string
-	name: string
-	description: string
-	media: MediaItem[]
-	price: number
-	maxGuests: number
-	rating: number
-	meta: VenueMeta
-	location: VenueLocation
-	created: string
-	updated: string
-}
 
 export async function editVenueApi(
 	venueId: string,

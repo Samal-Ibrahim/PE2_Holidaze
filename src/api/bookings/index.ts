@@ -50,3 +50,5 @@ export async function createReservation(
 		throw error
 	}
 }
+
+export { cancelBooking } from "./cancelBooking"

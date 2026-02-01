@@ -65,3 +65,50 @@ export type Venue = {
 		bookings: number
 	}
 }
+
+export type MediaItem = {
+	url: string
+	alt: string
+}
+
+export type VenueMeta = {
+	wifi: boolean
+	parking: boolean
+	breakfast: boolean
+	pets: boolean
+}
+
+export type VenueLocation = {
+	address: string
+	city: string
+	zip: string
+	country: string
+	continent: string
+	lat: number
+	lng: number
+}
+
+export type EditVenueRequest = {
+	name: string
+	description: string
+	media: MediaItem[]
+	price: number
+	maxGuests: number
+	rating: number
+	meta: VenueMeta
+	location: VenueLocation
+}
+
+export type EditVenueResponse = {
+	id: string
+	name: string
+	description: string
+	media: MediaItem[]
+	price: number
+	maxGuests: number
+	rating: number
+	meta: VenueMeta
+	location: VenueLocation
+	created: string
+	updated: string
+}

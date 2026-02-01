@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { toast } from "react-toastify"
-import { editVenueApi } from "@/api/venues/editVenueApi"
+import { deleteVenueApi, editVenueApi } from "@/api/venues/editVenueApi"
 import { fetchSingleVenue } from "@/api/venues/fetchSingleVenue"
 import { PROFILE_PAGE_URL } from "@/config/constants"
 
@@ -191,7 +191,7 @@ const EditVenues = () => {
 									<button
 										type="button"
 										onClick={() => handleRemoveImage(index)}
-										className="px-3 py-2 text-red-600 font-semibold cursor-pointer transition-colors"
+										className="px-3 py-2 btn-danger font-semibold cursor-pointer transition-colors"
 									>
 										Remove
 									</button>
@@ -338,9 +338,27 @@ const EditVenues = () => {
 						defaultValue={venue.location.lng}
 					/>
 
-					<div className="flex gap-2 mt-4">
-						<button className="btn btn-danger w-full" type="submit">
+					<div className="flex gap-2 mt-4 flex-col">
+						<button className="btn w-full" type="submit">
 							{mutation.isPending ? "Saving..." : "Save Changes"}
+						</button>
+						<button
+							type="button"
+							className="btn btn-danger w-full"
+							onClick={() => {
+								if (
+									window.confirm(
+										"Are you sure you want to delete this venue? This action cannot be undone."
+									)
+								) {
+									deleteVenueApi(venue.id)
+									toast.success("Venue deleted successfully.")
+									qc.invalidateQueries({ queryKey: ["profile"] })
+									navigate(PROFILE_PAGE_URL, { replace: true })
+								}
+							}}
+						>
+							Delete
 						</button>
 					</div>
 				</form>

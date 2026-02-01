@@ -22,7 +22,7 @@ const Login = () => {
 			if ("user" in data) {
 				toast.success("Login successful!")
 				const user: User = {
-					id: data.user.id,
+					id: data.user.id || data.user.name,
 					name: data.user.name,
 					email: data.user.email,
 					token: data.user.accessToken,

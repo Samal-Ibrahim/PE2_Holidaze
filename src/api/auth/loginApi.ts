@@ -32,7 +32,7 @@ export async function login(email: string, password: string): Promise<LoginOk | 
 		// Validate response
 		const validatedResponse = LoginResponseSchema.parse(data)
 
-		return { ok: true, user: validatedResponse.data }
+		return { ok: true, user: { ...validatedResponse.data, id: validatedResponse.data.id || "" } }
 	} catch (error) {
 		if (error instanceof ApiError) {
 			return {
@@ -41,6 +41,8 @@ export async function login(email: string, password: string): Promise<LoginOk | 
 				errors: error.errors,
 			}
 		}
+
+		console.error("Login error:", error)
 
 		return {
 			ok: false,

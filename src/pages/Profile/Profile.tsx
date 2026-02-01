@@ -1,6 +1,8 @@
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { Link, useLocation } from "react-router-dom"
+import { toast } from "react-toastify"
+import { cancelBooking } from "@/api/bookings"
 import { fetchProfile } from "@/api/profiles/holidazeProfileApi"
 import { PROFILE_PAGE_URL } from "@/config/constants"
 import { useAuth } from "@/hooks/useAuth"
@@ -23,6 +25,7 @@ const Profile = () => {
 		staleTime: 5 * 60 * 1000,
 		gcTime: 10 * 60 * 1000,
 	})
+	const qc = useQueryClient()
 
 	if (!username) return <p>Not logged in</p>
 	if (isLoading) return <p>Loading profile...</p>
@@ -148,6 +151,20 @@ const Profile = () => {
 											>
 												View
 											</Link>
+											<button
+												type="button"
+												className="btn btn-danger"
+												onClick={async () => {
+													if (window.confirm("Are you sure you want to cancel this booking?")) {
+														await cancelBooking(booking.id)
+														toast.success("Booking cancelled successfully.")
+														qc.invalidateQueries({ queryKey: ["profile"] })
+														qc.invalidateQueries({ queryKey: ["venue"] })
+													}
+												}}
+											>
+												Cancel
+											</button>
 										</div>
 									</div>
 								))}

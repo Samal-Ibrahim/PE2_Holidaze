@@ -1,7 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { DayPicker } from "react-day-picker"
 import { useParams } from "react-router-dom"
 import { toast } from "react-toastify"
+import "react-day-picker/dist/style.css"
 import { createReservation } from "@/api/bookings"
 import { fetchSingleVenue } from "@/api/venues/fetchSingleVenue"
 import { useAuth } from "@/hooks/useAuth"
@@ -9,6 +11,24 @@ import { useAuth } from "@/hooks/useAuth"
 const ViewSingleVenue = () => {
 	const { id } = useParams()
 	const [currentImageIndex, setCurrentImageIndex] = useState(0)
+	const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date }>({})
+	const [guests, setGuests] = useState(1)
+	const [showDatePicker, setShowDatePicker] = useState(false)
+	const datePickerRef = useRef<HTMLDivElement>(null)
+
+	// Close date picker when clicking outside
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
+				setShowDatePicker(false)
+			}
+		}
+
+		if (showDatePicker) {
+			document.addEventListener("mousedown", handleClickOutside)
+			return () => document.removeEventListener("mousedown", handleClickOutside)
+		}
+	}, [showDatePicker])
 
 	const { user: loggedInUser } = useAuth()
 	const username = loggedInUser?.name
@@ -23,6 +43,37 @@ const ViewSingleVenue = () => {
 		gcTime: 10 * 60 * 1000,
 	})
 
+	// Get all booked dates from venue bookings - memoized
+	const bookedDatesSet = useMemo(() => {
+		if (!data?.data?.bookings || data.data.bookings.length === 0) return new Set<string>()
+
+		const bookedDates = new Set<string>()
+
+		data.data.bookings.forEach((booking) => {
+			// Parse ISO strings to get just the date part (YYYY-MM-DD)
+			const startDateStr = booking.dateFrom.split("T")[0]
+			const endDateStr = booking.dateTo.split("T")[0]
+
+			const start = new Date(startDateStr)
+			const end = new Date(endDateStr)
+
+			// Add all dates in the range to the set, including end date
+			for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+				bookedDates.add(date.toISOString().split("T")[0])
+			}
+		})
+
+		return bookedDates
+	}, [data?.data?.bookings])
+
+	const getBookedDates = () => {
+		return bookedDatesSet
+	}
+
+	const isDateBooked = (dateStr: string) => {
+		return getBookedDates().has(dateStr)
+	}
+
 	const toZulu = (date: string) => {
 		if (!date) throw new Error("Please select both dates.")
 		// Convert date string to ISO 8601 format with Z (UTC) timezone for API
@@ -30,13 +81,12 @@ const ViewSingleVenue = () => {
 	}
 	const qc = useQueryClient()
 	const reservationData = () => {
-		// Query DOM directly for form inputs
-		const dateFromRaw = (document.querySelector('input[name="checkin"]') as HTMLInputElement)?.value
+		if (!dateRange.from || !dateRange.to) {
+			throw new Error("Please select both check-in and check-out dates.")
+		}
 
-		const dateToRaw = (document.querySelector('input[name="checkout"]') as HTMLInputElement)?.value
-
-		const guests =
-			parseInt((document.querySelector('input[name="guests"]') as HTMLInputElement)?.value, 10) || 1
+		const dateFromRaw = dateRange.from.toISOString().split("T")[0]
+		const dateToRaw = dateRange.to.toISOString().split("T")[0]
 
 		return {
 			dateFrom: toZulu(dateFromRaw),
@@ -220,7 +270,7 @@ const ViewSingleVenue = () => {
 
 				{/* Booking Card */}
 				<div className="lg:col-span-1">
-					<div className="sticky top-8  p-6 bg-white">
+					<div className="sticky top-8 p-6 bg-white z-10 overflow-visible">
 						<div className="mb-6">
 							<div className="flex items-baseline gap-2">
 								<span className="text-3xl font-bold">${venue.price}</span>
@@ -229,27 +279,45 @@ const ViewSingleVenue = () => {
 						</div>
 
 						<div className="space-y-4 mb-6">
-							<div>
-								<label htmlFor="checkin" className="block text-sm font-semibold mb-2">
-									Check-in
+							<div className="relative">
+								<label htmlFor="dates-btn" className="block text-sm font-semibold mb-2">
+									Select Dates
 								</label>
-								<input
-									name="checkin"
-									type="date"
-									min={new Date().toISOString().split("T")[0]}
-									className="w-full px-4 py-3 border focus:outline-none focus:ring-2 focus:ring-gray-500"
-								/>
-							</div>
-							<div>
-								<label htmlFor="checkout" className="block text-sm font-semibold mb-2">
-									Check-out
-								</label>
-								<input
-									type="date"
-									name="checkout"
-									min={new Date().toISOString().split("T")[0]}
-									className="w-full px-4 py-3 border focus:outline-none focus:ring-2 focus:ring-gray-500"
-								/>
+								<button
+									id="dates-btn"
+									type="button"
+									onClick={() => setShowDatePicker(!showDatePicker)}
+									className="w-full px-4 py-3 border text-left bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500"
+								>
+									{dateRange.from && dateRange.to
+										? `${dateRange.from.toLocaleDateString()} - ${dateRange.to.toLocaleDateString()}`
+										: dateRange.from
+											? `From ${dateRange.from.toLocaleDateString()}`
+											: "Select dates"}
+								</button>
+								{showDatePicker && (
+									<div
+										ref={datePickerRef}
+										className="absolute mt-1 border p-4 bg-white shadow-lg rounded max-h-96 overflow-y-auto z-50"
+									>
+										<DayPicker
+											mode="range"
+											selected={
+												dateRange.from ? { from: dateRange.from, to: dateRange.to } : undefined
+											}
+											onSelect={(range) => {
+												setDateRange(range || {})
+											}}
+											disabled={(date) => {
+												const dateStr = date.toISOString().split("T")[0]
+												const isPast = date < new Date(new Date().setHours(0, 0, 0, 0))
+												const isBooked = isDateBooked(dateStr)
+
+												return isPast || isBooked
+											}}
+										/>
+									</div>
+								)}
 							</div>
 							<div>
 								<label htmlFor="guests" className="block text-sm font-semibold mb-2">
@@ -257,10 +325,14 @@ const ViewSingleVenue = () => {
 								</label>
 								<input
 									type="number"
+									id="guests"
 									name="guests"
 									min="1"
 									max={venue.maxGuests}
-									defaultValue="1"
+									value={guests}
+									onChange={(e) =>
+										setGuests(Math.max(1, Math.min(venue.maxGuests, Number(e.target.value))))
+									}
 									className="w-full px-4 py-3 border focus:outline-none focus:ring-2 focus:ring-gray-500"
 								/>
 							</div>
