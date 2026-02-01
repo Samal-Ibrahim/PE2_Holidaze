@@ -82,7 +82,7 @@ const Login = () => {
 							placeholder="Enter your email"
 							required
 							id="email"
-							name="email" // Test account for development							defaultValue={"samibr02737@stud.noroff.no"}
+							name="email"
 						/>
 					</div>
 					<div className="flex flex-col w-full">
@@ -94,8 +94,8 @@ const Login = () => {
 							placeholder="Enter your password"
 							id="password"
 							name="password"
-							defaultValue={"Mypassword12345"}
 							minLength={8}
+							required
 						/>
 					</div>
 					<div className="flex gap-1 items-center">

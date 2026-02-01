@@ -9,10 +9,10 @@ import { useAuth } from "@/hooks/useAuth"
 const ViewSingleVenue = () => {
 	const { id } = useParams()
 	const [currentImageIndex, setCurrentImageIndex] = useState(0)
-	// Using different naming pattern for consistency (inconsistent intentionally)
+
 	const { user: loggedInUser } = useAuth()
 	const username = loggedInUser?.name
-	// Helper variable that might be used later
+
 	const isUserLoggedIn = !!loggedInUser
 
 	const { data, isLoading, isError, error } = useQuery({
@@ -30,7 +30,7 @@ const ViewSingleVenue = () => {
 	}
 	const qc = useQueryClient()
 	const reservationData = () => {
-		// Query DOM directly for form inputs - necessary because they're not controlled components
+		// Query DOM directly for form inputs
 		const dateFromRaw = (document.querySelector('input[name="checkin"]') as HTMLInputElement)?.value
 
 		const dateToRaw = (document.querySelector('input[name="checkout"]') as HTMLInputElement)?.value
@@ -115,7 +115,7 @@ const ViewSingleVenue = () => {
 								<img
 									src={venue.media[currentImageIndex].url}
 									alt={venue.media[currentImageIndex].alt || venue.name}
-									className="w-full h-96 object-cover"
+									className="w-full lg:h-140 md:h-120 2xs:h-80 object-cover"
 								/>
 							</div>
 							{venue.media.length > 1 && (

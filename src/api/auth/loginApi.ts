@@ -1,12 +1,25 @@
 import { LOGIN_API_URL } from "@/config/constants"
+import { LoginResponseSchema, LoginSchema } from "@/lib/validators/schemas"
 import type { LoginFail, LoginOk } from "@/types"
 import { ApiError, apiCall } from "../apiClient"
 
 export async function login(email: string, password: string): Promise<LoginOk | LoginFail> {
 	try {
+		// Validate input
+		const validationResult = LoginSchema.safeParse({ email, password })
+		if (!validationResult.success) {
+			return {
+				ok: false,
+				status: 400,
+				errors: validationResult.error.issues.map((issue) => ({
+					message: `${issue.path.join(".")}: ${issue.message}`,
+				})),
+			}
+		}
+
 		const credential = {
-			email: email,
-			password: password,
+			email: validationResult.data.email,
+			password: validationResult.data.password,
 		}
 
 		const data = await apiCall<{
@@ -16,7 +29,10 @@ export async function login(email: string, password: string): Promise<LoginOk | 
 			body: credential,
 		})
 
-		return { ok: true, user: data.data }
+		// Validate response
+		const validatedResponse = LoginResponseSchema.parse(data)
+
+		return { ok: true, user: validatedResponse.data }
 	} catch (error) {
 		if (error instanceof ApiError) {
 			return {

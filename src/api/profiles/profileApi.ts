@@ -4,12 +4,9 @@ import { ApiError, apiCall } from "../apiClient"
 
 export async function fetchProfileByUsername(username: string): Promise<ApiResponse<ProfileProps>> {
 	try {
-		const data = await apiCall<ApiResponse<ProfileProps>>(
-			`${PROFILE_API_URL}/${username}?=_count`,
-			{
-				method: "GET",
-			}
-		)
+		const data = await apiCall<ApiResponse<ProfileProps>>(`${PROFILE_API_URL}/${username}?_count`, {
+			method: "GET",
+		})
 
 		return data
 	} catch (error) {
