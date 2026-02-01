@@ -43,8 +43,8 @@ const EditVenues = () => {
 		queryKey: ["venue", id],
 		queryFn: () => fetchSingleVenue(id || ""),
 		enabled: !!id,
-		staleTime: 5 * 60 * 1000,
-		gcTime: 10 * 60 * 1000,
+		staleTime: 5 * 60 * 1000, // 5 minutes
+		gcTime: 10 * 60 * 1000, // 10 minutes
 	})
 
 	const [mediaItems, setMediaItems] = useState<{ url: string; alt: string }[]>([])
@@ -214,7 +214,7 @@ const EditVenues = () => {
 					<button
 						type="button"
 						onClick={handleAddImage}
-						className="mt-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold cursor-pointer transition-colors"
+						className="mt-2 px-4 py-2 bg-btn hover:bg-btn-bg-hover text-white font-semibold cursor-pointer transition-colors"
 					>
 						Add Image
 					</button>

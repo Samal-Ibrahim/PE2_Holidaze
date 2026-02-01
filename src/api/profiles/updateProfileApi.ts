@@ -15,7 +15,7 @@ export async function updateProfile(payload: ProfileUpdatePayload): Promise<void
 	}
 
 	try {
-		// Get username from localStorage directly since we need it for the API endpoint
+		// Get username from localStorage directly
 		const userJson = localStorage.getItem("user")
 		const user = userJson ? JSON.parse(userJson) : null
 		const username = user?.name

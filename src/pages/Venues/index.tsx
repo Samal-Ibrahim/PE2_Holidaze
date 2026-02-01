@@ -25,14 +25,12 @@ const Venues = () => {
 	const [sortOption, setSortOption] = useState<string>("latest")
 	const [isFilterOpen, setFilterOpen] = useState<boolean>(false)
 
-	// Manage body scroll - fixed memory leak
 	useEffect(() => {
 		// Only set overflow when filter is open
 		if (isFilterOpen) {
 			document.body.style.overflow = "hidden"
 		}
 
-		// Always clean up on unmount or when closing filter
 		return () => {
 			if (isFilterOpen) {
 				document.body.style.overflow = ""
@@ -91,7 +89,6 @@ const Venues = () => {
 		}
 	}, [filteredVenues, sortOption])
 
-	// Show loading skeleton only on initial load
 	if (isLoading && sortedVenues.length === 0) return <CardsSkeleton />
 
 	// Show error message

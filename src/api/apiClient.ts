@@ -1,6 +1,4 @@
-/**
- * Centralized API client for consistent error handling and token management
- */
+// Centralized API client for consistent error handling and token management
 
 export class ApiError extends Error {
 	status: number
@@ -22,9 +20,7 @@ interface ApiClientOptions {
 	apiKey?: string
 }
 
-/**
- * Make authenticated API requests with consistent error handling
- */
+// Make authenticated API requests with consistent error handling
 export async function apiCall<T>(url: string, options: ApiClientOptions = {}): Promise<T> {
 	const { method = "GET", headers = {}, body, token, apiKey } = options
 
@@ -89,9 +85,7 @@ export async function apiCall<T>(url: string, options: ApiClientOptions = {}): P
 	}
 }
 
-/**
- * Get token from localStorage safely
- */
+// Get token from localStorage safely
 export function getStoredToken(): string {
 	try {
 		const userJson = localStorage.getItem("user")
@@ -105,9 +99,7 @@ export function getStoredToken(): string {
 	}
 }
 
-/**
- * Validate required environment variables at startup
- */
+// Validate required environment variables at startup
 export function validateEnv(): void {
 	const apiKey = import.meta.env.VITE_API_KEY
 

@@ -33,7 +33,8 @@ const Login = () => {
 					queryKey: ["profile", user.name],
 					queryFn: () => fetchProfile(user.name),
 
-					staleTime: 5 * 60 * 1000,
+					staleTime: 5 * 60 * 1000, // 5 minutes
+					gcTime: 10 * 60 * 1000, // 10 minutes
 				})
 				navigate("/")
 			} else {
@@ -83,6 +84,7 @@ const Login = () => {
 							required
 							id="email"
 							name="email"
+							defaultValue={"samibr02737@stud.noroff.no"}
 						/>
 					</div>
 					<div className="flex flex-col w-full">
@@ -94,6 +96,7 @@ const Login = () => {
 							placeholder="Enter your password"
 							id="password"
 							name="password"
+							defaultValue={"Mypassword12345"}
 							minLength={8}
 							required
 						/>

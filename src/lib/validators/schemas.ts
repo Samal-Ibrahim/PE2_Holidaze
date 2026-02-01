@@ -4,7 +4,7 @@ import { z } from "zod"
 export const LoginSchema = z.object({
 	email: z
 		.string()
-		.email("Invalid email address")
+		.regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email format")
 		.refine((email) => email.endsWith("@stud.noroff.no"), {
 			message: "Email must end with @stud.noroff.no",
 		}),
@@ -15,7 +15,7 @@ export const RegisterSchema = z.object({
 	name: z.string().min(1, "Name is required"),
 	email: z
 		.string()
-		.email("Invalid email address")
+		.regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Invalid email format")
 		.refine((email) => email.endsWith("@stud.noroff.no"), {
 			message: "Email must end with @stud.noroff.no",
 		}),

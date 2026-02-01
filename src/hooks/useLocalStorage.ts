@@ -9,7 +9,7 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
 			const parsed = JSON.parse(stored)
 			return parsed ?? initialValue
 		} catch (error) {
-			// Handle corrupted localStorage data gracefully - don't crash the app
+			// Handle corrupted localStorage data
 			console.warn(`Failed to parse localStorage key "${key}":`, error)
 			return initialValue
 		}
