@@ -84,7 +84,6 @@ const Login = () => {
 							required
 							id="email"
 							name="email"
-							defaultValue={"samibr02737@stud.noroff.no"}
 						/>
 					</div>
 					<div className="flex flex-col w-full">
