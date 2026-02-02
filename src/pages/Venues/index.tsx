@@ -116,44 +116,104 @@ const Venues = () => {
 				value={searchQuery}
 				onChange={(e) => setSearchQuery(e.target.value)}
 			/>
-			<div className="gap-4 grid lg:grid-cols-[auto_1fr] shadow-md h-full">
+			<div className="gap-4 grid lg:grid-cols-[280px_1fr]">
+				{/* Mobile Filter Toggle Button */}
+				<div className="lg:hidden flex justify-center py-2">
+					<button
+						type="button"
+						onClick={() => setFilterOpen(!isFilterOpen)}
+						className="w-full px-4 py-2 bg-white border border-gray-300 rounded hover:bg-gray-50 transition-colors font-medium"
+					>
+						{isFilterOpen ? "Hide Filters" : "Show Filters"}
+					</button>
+				</div>
+
+				{/* Overlay for mobile */}
+				{isFilterOpen && (
+					<button
+						type="button"
+						className="lg:hidden fixed inset-0 bg-black/40 z-40"
+						onClick={() => setFilterOpen(false)}
+						aria-label="Close filters"
+					/>
+				)}
+
+				{/* Aside Filters */}
 				<aside
-					className={`2xs:fixed lg:static flex lg:w-60 2xs:w-full left-0 bottom-0 p-2 2xs:overflow-y-scroll lg:h-full lg:overflow-hidden justify-center hide-scrollbar lg:bg-gray-50 ${isFilterOpen ? "max-h-screen pt-10 bg-black/35 scroll-none" : "h-14 bg-black/15"}`}
+					className={`lg:sticky lg:top-4 lg:self-start lg:bg-white lg:border lg:border-gray-200 lg:rounded-lg lg:p-6 lg:max-h-[calc(100vh-2rem)] lg:overflow-y-auto scrollbar-visible
+						${
+							isFilterOpen
+								? "fixed inset-0 top-14 left-0 right-0 bottom-0 lg:relative lg:top-auto lg:left-auto lg:right-auto lg:bottom-auto bg-white z-50 overflow-y-auto p-4"
+								: "hidden lg:block"
+						}`}
 				>
-					<div className="lg:hidden 2xs:absolute flex justify-center w-full ">
+					{/* Close button for mobile */}
+					<div className="lg:hidden flex justify-between items-center mb-4">
+						<h3 className="text-lg font-semibold">Filters</h3>
 						<button
 							type="button"
-							onClick={() => {
-								setFilterOpen(!isFilterOpen)
-							}}
-							className={`bg-gray-50 shadow px-4 py-2 cursor-pointer active:bg-gray ${isFilterOpen ? "mt-6" : ""}`}
+							onClick={() => setFilterOpen(false)}
+							className="text-gray-500 hover:text-gray-700 text-xl"
 						>
-							Filter
+							✕
 						</button>
 					</div>
 
-					<div
-						className={`2xs:w-full md:w-md h-full bg-gray-50 p-4 lg:block ${isFilterOpen ? "block" : "hidden"}`}
-					>
-						<h4 className="mb-2">Sorting by</h4>
-						<p className="text-sm py-4  text-gray-500">
-							Sorting what is displayed on the page not all the available venues
-						</p>
-						<div className="flex flex-col gap-4 mt-6">
-							{/* Sort */}
+					{/* Filter Content */}
+					<div className="space-y-6">
+						<div>
+							<h4 className="font-semibold text-gray-900 mb-2">Sort By</h4>
+							<p className="text-xs text-gray-500 mb-3">
+								Sorting what is displayed on the page, not all venues
+							</p>
 							<SortFilter sortOption={sortOption} onSortChange={setSortOption} />
+						</div>
+
+						<hr className="border-gray-200" />
+
+						<div>
+							<h4 className="font-semibold text-gray-900 mb-3">Location</h4>
 							<CityFilter
 								selectedCities={selectedCities}
 								onCityChange={setSelectedCities}
 								venues={venues}
 							/>
+						</div>
+
+						<hr className="border-gray-200" />
+
+						<div>
+							<h4 className="font-semibold text-gray-900 mb-3">Amenities</h4>
 							<AmenitiesFilter
 								amenitiesFilter={amenitiesFilter}
 								setAmenitiesFilter={setAmenitiesFilter}
 							/>
+						</div>
+
+						<hr className="border-gray-200" />
+
+						<div>
+							<h4 className="font-semibold text-gray-900 mb-3">Price Range</h4>
 							<PriceFilter priceRange={priceRange} setPriceRange={setPriceRange} />
+						</div>
+
+						<hr className="border-gray-200" />
+
+						<div>
+							<h4 className="font-semibold text-gray-900 mb-3">Rating</h4>
 							<RatingFilter ratingFilter={ratingFilter} setRatingFilter={setRatingFilter} />
 						</div>
+					</div>
+
+					{/* Mobile: Apply Filters Button */}
+					<div className="lg:hidden mt-6 pt-4 border-t border-gray-200">
+						<button
+							type="button"
+							onClick={() => setFilterOpen(false)}
+							className="w-full px-4 py-2 bg-btn text-white hover:bg-btn-bg-hover transition-colors font-medium"
+						>
+							Apply Filters
+						</button>
 					</div>
 				</aside>
 				<div>
@@ -203,34 +263,31 @@ const Venues = () => {
 					)}
 				</div>
 			</div>
-			<div className="flex flex-col items-center bg-gray-50 p-4 container">
-				{filteredVenues.length > 100 && (
-					<p>
-						Showing {sortedVenues.length} of {filteredVenues.length} venues.
-					</p>
-				)}
-				<div className="flex flex-row justify-between mt-4 p-2 w-full max-w-md">
-					<button
-						type="button"
-						onClick={() => setPage(currentPage > 1 ? currentPage - 1 : 1)}
-						className="btn"
-					>
-						<FaArrowLeft />
-					</button>
+			<div className="flex flex-col items-center bg-gray-50 p-4 w-full">
+				<div className="w-full max-w-md">
+					<div className="flex flex-row justify-between mt-4 p-2 w-full">
+						<button
+							type="button"
+							onClick={() => setPage(currentPage > 1 ? currentPage - 1 : 1)}
+							className="btn"
+						>
+							<FaArrowLeft />
+						</button>
 
-					<div>
-						Page {data?.meta?.currentPage as number} of {data?.meta?.pageCount as number}
+						<div>
+							Page {data?.meta?.currentPage as number} of {data?.meta?.pageCount as number}
+						</div>
+
+						<button
+							type="button"
+							onClick={() => {
+								setPage(currentPage ? currentPage + 1 : currentPage)
+							}}
+							className="btn"
+						>
+							<FaArrowRight />
+						</button>
 					</div>
-
-					<button
-						type="button"
-						onClick={() => {
-							setPage(currentPage ? currentPage + 1 : currentPage)
-						}}
-						className="btn"
-					>
-						<FaArrowRight />
-					</button>
 				</div>
 			</div>
 		</section>
