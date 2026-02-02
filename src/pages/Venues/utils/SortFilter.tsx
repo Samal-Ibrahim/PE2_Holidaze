@@ -25,7 +25,6 @@ const SortFilter = ({ sortOption, onSortChange }: Props) => {
 				<option value="latest" className="p-2">
 					Latest
 				</option>
-				<option value="Oldest">Oldest</option>
 				<option value="cheapest">Cheapest</option>
 				<option value="expensive">Most expensive</option>
 			</select>

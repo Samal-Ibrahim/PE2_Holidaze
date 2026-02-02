@@ -78,8 +78,6 @@ const Venues = () => {
 		switch (sortOption) {
 			case "latest":
 				return sorted.sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())
-			case "oldest":
-				return sorted.sort((a, b) => new Date(a.created).getTime() - new Date(b.created).getTime())
 			case "cheapest":
 				return sorted.sort((a, b) => (a.price || 0) - (b.price || 0))
 			case "expensive":
@@ -237,13 +235,6 @@ const Venues = () => {
 										</div>
 										<div>
 											<p>{venue.location?.address}</p>
-											<p>
-												{new Date(venue.created).toLocaleDateString("en-GB", {
-													day: "numeric",
-													month: "short",
-													year: "numeric",
-												})}
-											</p>
 										</div>
 										<div className="flex flex-row justify-between">
 											<p className="text-sm">Night / ${venue.price}</p>
