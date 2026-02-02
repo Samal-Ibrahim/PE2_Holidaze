@@ -1,6 +1,5 @@
 // Custom error classes
 export {
-	ApiError,
 	AuthenticationError,
 	ValidationError,
 } from "./custom-errors"

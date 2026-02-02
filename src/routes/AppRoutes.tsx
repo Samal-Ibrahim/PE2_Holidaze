@@ -1,6 +1,5 @@
 import { Route, Routes, useLocation } from "react-router-dom"
 import {
-	CONTACT_PAGE_URL,
 	CREATE_VENUE_PAGE_URL,
 	LOGIN_PAGE_URL,
 	PROFILE_PAGE_URL,
@@ -9,7 +8,6 @@ import {
 } from "@/config/constants"
 import Login from "@/pages/Auth/Login"
 import Register from "@/pages/Auth/Register"
-import Contact from "@/pages/Contact"
 import NotFound from "@/pages/NotFound"
 import EditProfile from "@/pages/Profile/components/EditProfile"
 import EditVenue from "@/pages/Profile/components/EditVenues"
@@ -30,7 +28,6 @@ export default function AppRoutes() {
 		<>
 			{/* Background routes */}
 			<Routes location={state?.backgroundLocation || location}>
-				<Route path={CONTACT_PAGE_URL} element={<Contact />} />
 				<Route path={VENUES_PAGE_URL} element={<Venues />} />
 				<Route path={`${VENUES_PAGE_URL}venues/:id`} element={<ViewSingleVenue />} />
 

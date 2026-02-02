@@ -39,8 +39,8 @@ const ViewSingleVenue = () => {
 		queryKey: ["venue", id],
 		queryFn: () => fetchSingleVenue(id || ""),
 		enabled: !!id,
-		staleTime: 5 * 60 * 1000,
-		gcTime: 10 * 60 * 1000,
+		staleTime: 5 * 60 * 1000, // Keep data fresh for 5 minutes
+		gcTime: 10 * 60 * 1000, // Garbage collect after 10 minutes
 	})
 
 	// Get all booked dates from venue Bookings for disabling in date picker

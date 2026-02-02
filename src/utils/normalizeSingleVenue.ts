@@ -3,6 +3,8 @@ import imgNA from "@/assets/img-NA.png"
 import type { Venue } from "@/types/venue"
 import type { RawVenues } from "@/types/venues"
 
+// function to make the venue data consistent and clean on display
+
 export const normalizeSingleVenue = (venue: RawVenues): Venue => {
 	return {
 		id: venue.id,

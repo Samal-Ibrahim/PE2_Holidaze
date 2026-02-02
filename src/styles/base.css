@@ -26,22 +26,6 @@
 	--color-btn-text-hover: #ffffff;
 }
 
-.dark {
-	/*  Darkmode */
-	--color-bg: #121212;
-	--color-bg-hover: #d3d3d3;
-	--color-fg: #e9e7e7;
-	--color-content-bg: #1e1e1e;
-
-	--color-text: #e0e0e0;
-	--color-heading: #f3f4f6;
-
-	--color-btn: #1e1e1e;
-	--color-btn-text: #e0e0e0;
-
-	--color-btn-bg-hover: #ebebeb;
-	--color-btn-text-hover: #3d3d3d;
-}
 
 html,
 body {

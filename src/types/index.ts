@@ -13,8 +13,6 @@ export type {
 export type {
 	AuthContextType,
 	AuthProviderProps,
-	EditToggleContextType,
-	EditToggleProviderProps,
 } from "./context"
 
 export type { ProfileUpdatePayload } from "./profile"

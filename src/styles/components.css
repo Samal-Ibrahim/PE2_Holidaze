@@ -17,7 +17,7 @@
 	@apply bg-red-400 hover:bg-red-500 text-white;
 }
 
-/* DayPicker Custom Styling */
+/* React DayPicker Custom Styling */
 .rdp {
 	--rdp-cell-size: 2.5rem;
 	--rdp-accent-color: #000;

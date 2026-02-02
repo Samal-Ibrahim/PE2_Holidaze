@@ -42,7 +42,7 @@ const Venues = () => {
 		queryKey: ["venues", currentPage],
 		queryFn: () => fetchVenues(currentPage),
 		staleTime: 5 * 60 * 1000, // Keep data fresh for 5 minutes
-		gcTime: 10 * 60 * 1000,
+		gcTime: 10 * 60 * 1000, // Garbage collect after 10 minutes
 	})
 
 	const venues = data?.data ?? []

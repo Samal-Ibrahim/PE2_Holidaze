@@ -11,13 +11,3 @@ export type AuthContextType = {
 export type AuthProviderProps = {
 	children: ReactNode
 }
-
-// EditToggle Context Types
-export type EditToggleContextType = {
-	isEditOpen: boolean
-	setEditOpen: (value: boolean) => void
-}
-
-export type EditToggleProviderProps = {
-	children: ReactNode
-}

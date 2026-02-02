@@ -1,6 +1,8 @@
 import imgNA from "@/assets/img-NA.png"
 import type { RawVenues, Venues } from "@/types/venues"
 
+// function to make the venue data consistent and clean on display
+
 export const normalizeVenues = (venues: RawVenues[]): Venues[] => {
 	const normalizedVenues = venues.map((venue) => {
 		return {

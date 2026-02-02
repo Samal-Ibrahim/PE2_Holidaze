@@ -11,7 +11,7 @@ function App() {
 		try {
 			validateEnv()
 		} catch (error) {
-			// Validation errors should be shown to user
+			// Validation errors will be shown to user
 			console.error("App initialization failed:", error)
 		}
 	}, [])
