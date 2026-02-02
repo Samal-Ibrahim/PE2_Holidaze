@@ -43,7 +43,7 @@ const ViewSingleVenue = () => {
 		gcTime: 10 * 60 * 1000,
 	})
 
-	// Get all booked dates from venue bookings - memoized
+	// Get all booked dates from venue Bookings for disabling in date picker
 	const bookedDatesSet = useMemo(() => {
 		if (!data?.data?.bookings || data.data.bookings.length === 0) return new Set<string>()
 
@@ -221,7 +221,23 @@ const ViewSingleVenue = () => {
 					{/* Description */}
 					<div className="border-t pt-6">
 						<h2 className="text-2xl font-semibold mb-3">About this venue</h2>
-						<p className="text-gray-700 leading-relaxed">{venue.description}</p>
+						<p className="text-gray-700 leading-relaxed p-2">{venue.description}</p>
+						<div className="border-t pt-6">
+							<h2 className="text-2xl font-semibold mb-3">Host Information</h2>
+							<div className="flex flex-row gap-4 items-center">
+								<div>
+									<img
+										src={venue.owner?.avatar?.url}
+										alt={venue.owner?.avatar?.alt || "Owner avatar"}
+										className="w-20 h-20 rounded-full object-cover mb-4"
+									/>
+								</div>
+								<div className="flex flex-col gap-2">
+									<p> {venue.owner.name || "Unknown"}</p>
+									<p> {venue.owner.email || "Unknown"}</p>
+								</div>
+							</div>
+						</div>
 					</div>
 
 					{/* Amenities */}

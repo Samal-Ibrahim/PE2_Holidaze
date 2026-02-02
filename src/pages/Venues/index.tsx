@@ -135,8 +135,11 @@ const Venues = () => {
 					<div
 						className={`2xs:w-full md:w-md h-full bg-gray-50 p-4 lg:block ${isFilterOpen ? "block" : "hidden"}`}
 					>
-						<h5 className="mb-6 font-bold">Sorting by</h5>
-						<div className="flex flex-col gap-4">
+						<h4 className="mb-2">Sorting by</h4>
+						<p className="text-sm py-4  text-gray-500">
+							Sorting what is displayed on the page not all the available venues
+						</p>
+						<div className="flex flex-col gap-4 mt-6">
 							{/* Sort */}
 							<SortFilter sortOption={sortOption} onSortChange={setSortOption} />
 							<CityFilter

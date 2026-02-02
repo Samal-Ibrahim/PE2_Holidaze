@@ -5,7 +5,6 @@ import App from "./App"
 import "../src/styles/index.css"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { AuthProvider } from "./context/AuthContext"
-import { EditToggleProvider } from "./context/EditToggleContext"
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -29,11 +28,9 @@ if (rootElement) {
 		<React.StrictMode>
 			<QueryClientProvider client={queryClient}>
 				<AuthProvider>
-					<EditToggleProvider>
-						<BrowserRouter>
-							<App />
-						</BrowserRouter>
-					</EditToggleProvider>
+					<BrowserRouter>
+						<App />
+					</BrowserRouter>
 				</AuthProvider>
 			</QueryClientProvider>
 		</React.StrictMode>

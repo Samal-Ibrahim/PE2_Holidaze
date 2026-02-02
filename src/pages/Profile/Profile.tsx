@@ -126,9 +126,15 @@ const Profile = () => {
 												className="h-44 w-full object-cover"
 											/>
 											<h4 className="text-lg font-semibold leading-tight">{booking.venue.name}</h4>
+											<div className="flex flex-row gap-2">
+												<p className="font-semibold">Booked from:</p>
+												<p>{new Date(booking.dateFrom).toLocaleDateString()}</p>
+												<p className="font-semibold">to</p>
+												<p>{new Date(booking.dateTo).toLocaleDateString()}</p>
+											</div>
 											<div className=" flex flex-col justify-between mt-3 space-y-1 text-sm text-neutral-700">
 												<p className="truncate">
-													<span className="font-semibold">Location:</span>{" "}
+													<span className="font-semibold">Location:</span>
 													{booking.venue.location?.address}, {booking.venue.location?.city}
 												</p>
 
