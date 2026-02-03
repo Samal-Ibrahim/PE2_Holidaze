@@ -95,7 +95,6 @@ const Login = () => {
 							placeholder="Enter your password"
 							id="password"
 							name="password"
-							defaultValue={"Mypassword12345"}
 							minLength={8}
 							required
 						/>
