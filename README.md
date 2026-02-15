@@ -50,7 +50,7 @@ A modern, full-featured venue booking application built with React, TypeScript, 
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/FransoArbela/PE2_Holidaze.git
+git clone https://github.com/Samal-Ibrahim/PE2_Holidaze.git
 cd PE2_Holidaze
 ```
 
