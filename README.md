@@ -1,3 +1,5 @@
+# Reflection below
+
 # Holidaze - Venue Booking Platform
 
 A modern, full-featured venue booking application built with React, TypeScript, and Vite. Users can browse venues, make reservations, and venue managers can create and manage their listings.
@@ -276,6 +278,50 @@ For issues, questions, or suggestions:
 **Samal** - Noroff Student
 
 ---
+
+## Project Process Reflection: PE2 Holidaze
+During PE2 Holidaze, I worked on both building features and improving the overall structure
+of the project. I built the venue viewing and booking system, implemented the profile modal
+for editing venues, and integrated React Day Picker for selecting date ranges. At some
+point, I stepped back and reviewed the whole codebase instead of just continuing with
+features. During that review, I found and fixed more than 20 issues that could have caused
+problems in production.
+
+One thing that worked well was doing a full project scan early. I noticed inconsistent API
+patterns, different error handling approaches, and unpredictable state management.
+Instead of fixing issues randomly, I standardized how API calls were written and made sure
+data fetching followed the same pattern using TanStack React Query. I also created a
+centralized apiClient with consistent error handling, which removed repetitive code and
+made the project easier to maintain.
+
+Using TypeScript helped significantly during refactoring. When renaming functions across
+multiple components, the type system immediately highlighted broken imports and
+mismatches. That allowed me to refactor confidently without introducing hidden runtime
+errors.
+
+The biggest challenge was understanding React Query more deeply. I struggled with state
+synchronization, especially around the date picker and modal refresh behavior. At first, I
+assumed the issue was in the feature logic, but it was actually related to how useState
+initializes only once and does not automatically resync with external changes. After
+reviewing the documentation and testing different approaches, I realized I needed to
+explicitly control when and how state updates occur.
+
+Bulk refactoring also exposed smaller technical issues. When replacing Tailwind classes
+across multiple files, some identical-looking strings failed to match. The problem turned
+out to be whitespace differences such as tabs and spaces. That experience reinforced the
+importance of inspecting file content carefully rather than relying on visual similarity.
+The image management feature, where users can add and remove media items, felt
+complex at first because of state updates. Separating the logic into smaller functions like
+handleAddImage and handleRemoveImage made the behavior clearer and easier to debug.
+Adapting to React Query required shifting from thinking only about component-level state
+to thinking about server state, caching, staleTime, gcTime, and query invalidation. Once I
+understood these concepts, many UI updates became simpler because the data stayed
+synchronized automatically after successful mutations.
+
+Overall, this project reinforced that good development is not only about building features. It
+is also about consistency, structure, and making code easier to understand for future
+changes. I learned that refactoring and reviewing existing code is just as important as
+implementing new functionality
 
 **Last Updated:** February 2026  
 **Version:** 1.0.0
