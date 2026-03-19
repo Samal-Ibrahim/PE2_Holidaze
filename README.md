@@ -325,3 +325,15 @@ implementing new functionality
 
 **Last Updated:** February 2026  
 **Version:** 1.0.0
+
+---
+
+## 📊 Exam Results
+
+| Item | Details |
+|------|---------|
+| **Course** | Noroff PE2 – Front-End Development |
+| **Project** | Holidaze – Venue Booking Platform |
+| **Submission Date** | February 2026 |
+| **Grade** | *(to be updated)* |
+| **Feedback** | *(to be updated)* |
