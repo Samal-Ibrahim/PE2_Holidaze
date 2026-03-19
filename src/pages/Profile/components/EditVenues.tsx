@@ -71,6 +71,18 @@ const EditVenues = () => {
 		},
 	})
 
+	const deleteMutation = useMutation({
+		mutationFn: (venueId: string) => deleteVenueApi(venueId),
+		onSuccess: () => {
+			toast.success("Venue deleted successfully.")
+			qc.invalidateQueries({ queryKey: ["profile"] })
+			navigate(PROFILE_PAGE_URL, { replace: true })
+		},
+		onError: () => {
+			toast.error("Failed to delete venue.")
+		},
+	})
+
 	const state = location.state as { backgroundLocation?: Location }
 	const close = () => {
 		if (state?.backgroundLocation) navigate(-1)
@@ -351,14 +363,11 @@ const EditVenues = () => {
 										"Are you sure you want to delete this venue? This action cannot be undone."
 									)
 								) {
-									deleteVenueApi(venue.id)
-									toast.success("Venue deleted successfully.")
-									qc.invalidateQueries({ queryKey: ["profile"] })
-									navigate(PROFILE_PAGE_URL, { replace: true })
+									deleteMutation.mutate(venue.id)
 								}
 							}}
 						>
-							Delete
+							{deleteMutation.isPending ? "Deleting..." : "Delete"}
 						</button>
 					</div>
 				</form>
